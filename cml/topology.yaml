@@ -1,0 +1,615 @@
+lab:
+  description: ""
+  notes: ""
+  title: Lab at Tue 08:57 AM
+  version: 0.2.0
+links:
+  - id: l0
+    n1: n0
+    n2: n1
+    i1: i0
+    i2: i0
+    label: bridge-to-sandbox-port<->sandbox-backend-port0
+  - id: l1
+    n1: n1
+    n2: n4
+    i1: i1
+    i2: i1
+    label: sandbox-backend-port1<->cat8000v-0-GigabitEthernet1
+  - id: l2
+    n1: n1
+    n2: n5
+    i1: i2
+    i2: i1
+    label: sandbox-backend-port2<->cat8000v-1-GigabitEthernet1
+  - id: l3
+    n1: n1
+    n2: n2
+    i1: i3
+    i2: i0
+    label: sandbox-backend-port3<->server-ens2
+  - id: l4
+    n1: n1
+    n2: n3
+    i1: i4
+    i2: i0
+    label: sandbox-backend-port4<->client-ens2
+  - id: l5
+    n1: n4
+    n2: n5
+    i1: i2
+    i2: i2
+    label: cat8000v-0-GigabitEthernet2<->cat8000v-1-GigabitEthernet2
+  - id: l6
+    n1: n2
+    n2: n4
+    i1: i1
+    i2: i3
+    label: server-ens3<->cat8000v-0-GigabitEthernet3
+  - id: l7
+    n1: n5
+    n2: n3
+    i1: i3
+    i2: i1
+    label: cat8000v-1-GigabitEthernet3<->client-ens3
+  - id: l8
+    n1: n4
+    n2: n5
+    i1: i4
+    i2: i4
+    label: cat8000v-0-GigabitEthernet4<->cat8000v-1-GigabitEthernet4
+  - id: l9
+    n1: n6
+    n2: n1
+    i1: i1
+    i2: i5
+    label: cat8000v-2-GigabitEthernet1<->sandbox-backend-port5
+  - id: l10
+    n1: n6
+    n2: n4
+    i1: i2
+    i2: i5
+    label: cat8000v-2-GigabitEthernet2<->cat8000v-0-GigabitEthernet5
+  - id: l11
+    n1: n6
+    n2: n5
+    i1: i3
+    i2: i5
+    label: cat8000v-2-GigabitEthernet3<->cat8000v-1-GigabitEthernet5
+nodes:
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n0
+    image_definition: null
+    label: bridge-to-sandbox
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 120
+    y: -200
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: ums-f8612dfc-e6
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n1
+    image_definition: null
+    label: sandbox-backend
+    node_definition: unmanaged_switch
+    ram: null
+    tags: []
+    x: -80
+    y: -80
+    interfaces:
+      - id: i0
+        label: port0
+        slot: 0
+        type: physical
+      - id: i1
+        label: port1
+        slot: 1
+        type: physical
+      - id: i2
+        label: port2
+        slot: 2
+        type: physical
+      - id: i3
+        label: port3
+        slot: 3
+        type: physical
+      - id: i4
+        label: port4
+        slot: 4
+        type: physical
+      - id: i5
+        label: port5
+        slot: 5
+        type: physical
+      - id: i6
+        label: port6
+        slot: 6
+        type: physical
+      - id: i7
+        label: port7
+        slot: 7
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      #cloud-config
+      hostname: server
+      manage_etc_hosts: True
+      system_info:
+        default_user:
+          name: cisco
+      password: cisco
+      chpasswd: { expire: False }
+      ssh_pwauth: True
+      ssh_authorized_keys:
+        - VIRL-USER-SSH-PUBLIC-KEY
+      write_files:
+        - path: /etc/netplan/50-cloud-init.yaml
+          content: |
+            network:
+              version: 2
+              ethernets:
+                ens3:
+                  match:
+                    name: ens3
+                  addresses:
+                    - 172.16.101.11/24
+                  routes:
+                    - to: 172.16.0.0/16
+                      via: 172.16.101.1
+                  set-name: ens3
+                ens2:
+                  match:
+                    name: ens2
+                  addresses:
+                    - 10.10.20.179/24
+                  gateway4: 10.10.20.254
+                  set-name: ens2
+      runcmd:
+        - netplan apply
+        - sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+        - echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+        - echo "UseDNS no" >> /etc/ssh/sshd_config
+        - systemctl restart sshd
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n2
+    image_definition: null
+    label: server
+    node_definition: ubuntu
+    ram: null
+    tags: []
+    x: -560
+    y: 120
+    interfaces:
+      - id: i0
+        label: ens2
+        slot: 0
+        type: physical
+      - id: i1
+        label: ens3
+        slot: 1
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      #cloud-config
+      hostname: client
+      manage_etc_hosts: True
+      system_info:
+        default_user:
+          name: cisco
+      password: cisco
+      chpasswd: { expire: False }
+      ssh_pwauth: True
+      ssh_authorized_keys:
+        - VIRL-USER-SSH-PUBLIC-KEY
+      write_files:
+        - path: /etc/netplan/50-cloud-init.yaml
+          content: |
+            network:
+              version: 2
+              ethernets:
+                ens3:
+                  match:
+                    name: ens3
+                  addresses:
+                    - 172.16.102.11/24
+                  routes:
+                    - to: 172.16.0.0/16
+                      via: 172.16.102.1
+                  set-name: ens3
+                ens2:
+                  match:
+                    name: ens2
+                  addresses:
+                    - 10.10.20.180/24
+                  gateway4: 10.10.20.254
+                  set-name: ens2
+      runcmd:
+        - netplan apply
+        - sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+        - echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+        - echo "UseDNS no" >> /etc/ssh/sshd_config
+        - systemctl restart sshd
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n3
+    image_definition: null
+    label: client
+    node_definition: ubuntu
+    ram: null
+    tags: []
+    x: 400
+    y: 120
+    interfaces:
+      - id: i0
+        label: ens2
+        slot: 0
+        type: physical
+      - id: i1
+        label: ens3
+        slot: 1
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      !
+      hostname cat8000v-0
+      !
+      no logging console
+      enable password cisco
+      !
+      aaa new-model
+      !
+      aaa authentication login default local
+      aaa authorization exec default local
+      !
+      aaa session-id common
+      !
+      !
+      username cisco privilege 15 secret 9 $9$iVecEqVTUJzHUk$EO2BfGoo4I8.wW.QanPw2rSxwy9NJt6kc3xFNEFLYSA
+      username admin privilege 15 password 0 Cisco123
+      !
+      interface GigabitEthernet1
+       description mgmt to port1.sandbox-backend
+       ip address 10.10.20.215 255.255.255.0
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet2
+       description Connected to cat8000v-1 GigabitEthernet2
+       ip address 10.1.1.1 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet3
+       description not used
+       no ip address
+       no shutdown
+       negotiation auto
+      !
+      interface GigabitEthernet4
+       description Connected to cat8000v-1 GigabitEthernet4
+       ip address 10.2.2.1 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet5
+       description Connected to cat8000v-2 GigabitEthernet2
+       ip address 10.3.3.1 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      router isis
+       net 49.0001.0000.0000.000a.00
+       is-type level-1
+      !
+      no ip http server
+      ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.10.20.254
+      !
+      line con 0
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       stopbits 1
+      line aux 0
+      line vty 0 4
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       length 0
+       transport input telnet ssh
+      !
+      telemetry ietf subscription 1010
+       encoding encode-kvgpb
+       filter xpath /process-cpu-ios-xe-oper:cpu-usage/cpu-utilization/five-seconds
+       source-address 10.10.20.215
+       stream yang-push
+       update-policy periodic 2000
+       receiver ip address 10.10.20.50 57500 protocol grpc-tcp
+      netconf-yang
+      restconf
+      !
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n4
+    image_definition: null
+    label: cat8000v-0
+    node_definition: cat8000v
+    ram: null
+    tags: []
+    x: -320
+    y: 120
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet2
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet3
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet4
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet5
+        slot: 4
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      !
+      hostname cat8000v-1
+      !
+      no logging console
+      enable password cisco
+      !
+      aaa new-model
+      !
+      aaa authentication login default local
+      aaa authorization exec default local
+      !
+      aaa session-id common
+      !
+      !
+      username cisco privilege 15 secret 9 $9$iVecEqVTUJzHUk$EO2BfGoo4I8.wW.QanPw2rSxwy9NJt6kc3xFNEFLYSA
+      username admin privilege 15 password 0 Cisco123
+      !
+      !
+      interface GigabitEthernet1
+       description mgmt to port2.sandbox-backend
+       ip address 10.10.20.216 255.255.255.0
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet2
+       description Connected to cat8000v-0 GigabitEthernet2
+       ip address 10.1.1.2 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet3
+       description Connected to end host
+       ip address 172.16.102.1 255.255.255.0
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet4
+       description Connected to cat8000v-0 GigabitEthernet4
+       ip address 10.2.2.2 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet5
+       description Connected to cat8000v-2 GigabitEthernet3
+       ip address 10.4.4.1 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      router isis
+       net 49.0001.0000.0000.000b.00
+       is-type level-1
+      !
+      no ip http server
+      ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.10.20.254
+      !
+      line con 0
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       stopbits 1
+      line aux 0
+      line vty 0 4
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       transport input telnet ssh
+      !
+      !
+      telemetry ietf subscription 1010
+       encoding encode-kvgpb
+       filter xpath /process-cpu-ios-xe-oper:cpu-usage/cpu-utilization/five-seconds
+       source-address 10.10.20.216
+       stream yang-push
+       update-policy periodic 2000
+       receiver ip address 10.10.20.50 57500 protocol grpc-tcp
+      netconf-yang
+      restconf
+      !
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n5
+    image_definition: null
+    label: cat8000v-1
+    node_definition: cat8000v
+    ram: null
+    tags: []
+    x: 120
+    y: 120
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet2
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet3
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet4
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet5
+        slot: 4
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      !
+      hostname cat8000v-2
+      !
+      logging console
+      enable password cisco
+      !
+      aaa new-model
+      !
+      aaa authentication login default local
+      aaa authorization exec default local
+      !
+      aaa session-id common
+      !
+      !
+      username cisco privilege 15 secret 9 $9$iVecEqVTUJzHUk$EO2BfGoo4I8.wW.QanPw2rSxwy9NJt6kc3xFNEFLYSA
+      username admin privilege 15 password 0 Cisco123
+      !
+      !
+      interface GigabitEthernet1
+       description mgmt to port5.sandbox-backend
+       ip address 10.10.20.217 255.255.255.0
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet2
+       description Connected to cat8000v-0 GigabitEthernet5
+       ip address 10.3.3.2 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      interface GigabitEthernet3
+       description Connected to cat8000v-1 GigabitEthernet5
+       ip address 10.4.4.2 255.255.255.0
+       ip router isis
+       negotiation auto
+       no shutdown
+      !
+      router isis
+       net 49.0001.0000.0000.000c.00
+       is-type level-1
+      !
+      no ip http server
+      ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.10.20.254
+      !
+      line con 0
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       stopbits 1
+      line aux 0
+      line vty 0 4
+       logging synchronous
+       exec-timeout 0 0
+       password cisco
+       transport input telnet ssh
+      !
+      !
+      telemetry ietf subscription 1010
+       encoding encode-kvgpb
+       filter xpath /process-cpu-ios-xe-oper:cpu-usage/cpu-utilization/five-seconds
+       source-address 10.10.20.216
+       stream yang-push
+       update-policy periodic 2000
+       receiver ip address 10.10.20.50 57500 protocol grpc-tcp
+      netconf-yang
+      restconf
+      !
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n6
+    image_definition: null
+    label: cat8000v-2
+    node_definition: cat8000v
+    ram: null
+    tags: []
+    x: -80
+    y: 40
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet2
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet3
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet4
+        slot: 3
+        type: physical
+annotations: []

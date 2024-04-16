@@ -1,0 +1,28 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: webhooks
+    receivers:
+      - uid: b29cd573-af3b-432b-b465-52a8479add88
+        type: webhook
+        settings:
+          httpMethod: POST
+          message: Issue detected with network telemetry
+          title: Grafana Alert
+          url: $GRAFANA_WEB_HOOK
+        disableResolveMessage: false
+      - uid: bd8139a5-44e1-4db1-b114-8fc9e1e25c23
+        type: webhook
+        settings:
+          httpMethod: POST
+          message: Network issue detected
+          title: Automatic Network Alert
+          url: http://host.docker.internal:$LLM_HTTP_PORT/alert
+        disableResolveMessage: false
+      - uid: f727420e-064c-49c1-aff8-cc8831f85a88
+        type: webex
+        settings:
+          bot_token: $WEBEX_TEAMS_ACCESS_TOKEN
+          room_id: $WEBEX_ROOM_ID
+          message: '{{ template "webex.message" . }}'
+        disableResolveMessage: false

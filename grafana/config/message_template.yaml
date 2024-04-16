@@ -1,0 +1,40 @@
+# Based on
+# https://softwaremill.com/mastering-alerts-in-grafana-kubernetes-provisioning-and-slack-notifications/
+templates:
+  - orgID: 1
+    name: webex.message
+    template: |
+      {{ define "webex.print_alert" -}}
+
+      {{ if .Annotations }}
+      📝 **Summary:** {{ .Annotations.summary}}
+      {{ if .Annotations.description }}
+      **Description:** {{ .Annotations.description }}
+      {{ end }}
+      {{ end }}
+
+      Link(s):
+      {{ if .DashboardURL }}
+      - 📊 [Grafana Dashboard]({{ .DashboardURL }})
+      {{ end }}
+      {{ if .PanelURL }}
+      - 📈 [Panel Dashboard]({{ .PanelURL }})
+      {{ end }}
+      {{ if .SilenceURL }}
+      - 🔕 [Silence this alert]({{ .SilenceURL }})
+      {{- end }}
+      {{- end }}
+
+      {{ define "webex.message" -}}
+      {{ if .Alerts.Firing }}
+      ### 🚨 Network Alert 🚨
+      🔥 Firing alert(s): {{ len .Alerts.Firing }}
+
+      {{- range $i, $alert := .Alerts.Firing }}
+      {{ template "webex.print_alert" $alert }}
+
+      ---
+
+      {{- end }}
+      {{- end }}
+      {{- end }}

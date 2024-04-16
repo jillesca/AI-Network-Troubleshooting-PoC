@@ -1,0 +1,443 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: isis_neighbor_down
+    folder: isis_neighbor_down
+    interval: 10s
+    rules:
+      - uid: cd2069c2-6524-4164-b51a-e3fcc8f74aa9
+        title: cat8000v-0 isis neighbors
+        condition: E
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-0")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: A
+          - refId: B
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              datasource:
+                type: influxdb
+                uid: P5697886F9CA74929
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-0")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: mean
+              refId: C
+              type: reduce
+          - refId: D
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: B
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: D
+              settings:
+                mode: replaceNN
+                replaceWithValue: 0
+              type: reduce
+          - refId: E
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: $C > $D
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: E
+              type: math
+        dashboardUid: d44174ca-56c5-41dc-9451-2c858cc0566b
+        panelId: 12
+        noDataState: OK
+        execErrState: Error
+        for: 10s
+        annotations:
+          __dashboardUid__: d44174ca-56c5-41dc-9451-2c858cc0566b
+          __panelId__: "12"
+          description: One ISIS neighbor on cat8000v-0 has been detected down
+          summary: cat8000v-0 ISIS Neighbor down
+        labels:
+          device: cat8000v-0
+        isPaused: false
+      - uid: b2663051-b248-46c4-9c61-d4b67ee0ef12
+        title: cat8000v-1 isis neighbors
+        condition: E
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-1")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: A
+          - refId: B
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              datasource:
+                type: influxdb
+                uid: P5697886F9CA74929
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-1")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: mean
+              refId: C
+              type: reduce
+          - refId: D
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: D
+              settings:
+                mode: replaceNN
+                replaceWithValue: 0
+              type: reduce
+          - refId: E
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: $C > $D
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: E
+              type: math
+        dashboardUid: d44174ca-56c5-41dc-9451-2c858cc0566b
+        panelId: 12
+        noDataState: OK
+        execErrState: Error
+        for: 10s
+        annotations:
+          __dashboardUid__: d44174ca-56c5-41dc-9451-2c858cc0566b
+          __panelId__: "12"
+          description: One ISIS neighbor on cat8000v-1 has been detected down
+          summary: cat8000v-1 ISIS Neighbor down
+        labels:
+          device: cat8000v-1
+        isPaused: false
+      - uid: af154e35-a02d-4735-a807-f3c052d999dc
+        title: cat8000v-2 isis neighbors
+        condition: E
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-2")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: A
+          - refId: B
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: P5697886F9CA74929
+            model:
+              datasource:
+                type: influxdb
+                uid: P5697886F9CA74929
+              intervalMs: 1000
+              maxDataPoints: 43200
+              query: |-
+                from(bucket: "mdt_grpc")
+                  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+                  |> filter(fn: (r) => r["_field"] == "isis_neighbors_count")
+                  |> filter(fn: (r) => r["device"] == "cat8000v-2")
+                  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+                  |> yield(name: "mean")
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: mean
+              refId: C
+              type: reduce
+          - refId: D
+            relativeTimeRange:
+              from: 30
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: D
+              settings:
+                mode: replaceNN
+                replaceWithValue: 0
+              type: reduce
+          - refId: E
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: $C > $D
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: E
+              type: math
+        dashboardUid: d44174ca-56c5-41dc-9451-2c858cc0566b
+        panelId: 12
+        noDataState: OK
+        execErrState: Error
+        for: 10s
+        annotations:
+          __dashboardUid__: d44174ca-56c5-41dc-9451-2c858cc0566b
+          __panelId__: "12"
+          description: One ISIS neighbor on cat8000v-2 has been detected down
+          summary: cat8000v-2 ISIS Neighbor down
+        labels:
+          device: cat8000v-2
+        isPaused: false

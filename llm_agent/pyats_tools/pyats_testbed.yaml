@@ -1,0 +1,79 @@
+devices:
+  cat8000v-0:
+    type: router
+    os: iosxe
+    credentials:
+      default:
+        username: cisco
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 10.10.20.215
+      netconf:
+        class: yang.connector.Netconf
+        port: 830
+        ip: 10.10.20.215
+
+  cat8000v-1:
+    type: router
+    alias: uut
+    os: iosxe
+    credentials:
+      default:
+        username: cisco
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 10.10.20.216
+      netconf:
+        class: yang.connector.Netconf
+        port: 830
+        ip: 10.10.20.216
+
+  cat8000v-2:
+    type: router
+    os: iosxe
+    credentials:
+      default:
+        username: cisco
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 10.10.20.217
+      netconf:
+        class: yang.connector.Netconf
+        port: 830
+        ip: 10.10.20.217
+
+  # sandbox-iosxe-latest-1.cisco.com:
+  #   type: router
+  #   os: iosxe
+  #   credentials:
+  #     default:
+  #       username: admin
+  #       password: C1sco12345
+  #   connections:
+  #     cli:
+  #       protocol: ssh
+  #       ip: sandbox-iosxe-latest-1.cisco.com
+  # netconf:
+  #   class: yang.connector.Netconf
+  #   port: 830
+  #   ip: sandbox-iosxe-latest-1.cisco.com
+
+  # sandbox-iosxr-1.cisco.com:
+  #   type: "router"
+  #   os: "iosxr"
+  #   platform: "iosxrv"
+  #   alias: "xr"
+  #   credentials:
+  #     default:
+  #       username: admin
+  #       password: C1sco12345
+  #   connections:
+  #     cli:
+  #       protocol: ssh
+  #       ip: "sandbox-iosxr-1.cisco.com"

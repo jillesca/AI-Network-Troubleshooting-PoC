@@ -1,0 +1,13 @@
+[
+  {
+    "host": "10.10.20.216",
+    "port": 830,
+    "username": "cisco",
+    "password": "cisco",
+    "hostkey_verify": "False",
+    "device_params": {
+      "name": "iosxe"
+    },
+    "hostname": "cat8000v-1"
+  }
+]

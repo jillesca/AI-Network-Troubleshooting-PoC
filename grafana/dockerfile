@@ -1,0 +1,36 @@
+FROM  grafana/grafana-oss:10.3.1
+
+EXPOSE 3000
+
+ARG GRAFANA_TOKEN \
+    LLM_HTTP_PORT \
+    WEBEX_ROOM_ID \
+    GRAFANA_WEB_HOOK \
+    WEBEX_TEAMS_ACCESS_TOKEN
+
+ENV GRAFANA_TOKEN=${GRAFANA_TOKEN} \
+    LLM_HTTP_PORT=${LLM_HTTP_PORT} \
+    WEBEX_ROOM_ID=${WEBEX_ROOM_ID} \
+    GRAFANA_WEB_HOOK=${GRAFANA_WEB_HOOK} \
+    WEBEX_TEAMS_ACCESS_TOKEN=${WEBEX_TEAMS_ACCESS_TOKEN} 
+
+COPY grafana/config/ /tmp/config/
+
+USER root
+
+RUN mv /tmp/config/grafana.ini /etc/grafana/grafana.ini \
+    && mv /tmp/config/alerts.yaml /etc/grafana/provisioning/alerting/alerts.yaml \
+    && mv /tmp/config/policies.yaml /etc/grafana/provisioning/alerting/policies.yaml \
+    && mv /tmp/config/dashboard.yaml /etc/grafana/provisioning/dashboards/dashboard.yaml \
+    && mv /tmp/config/dashboard.json /etc/grafana/provisioning/dashboards/dashboard.json \
+    && mv /tmp/config/datasources.yaml /etc/grafana/provisioning/datasources/datasources.yaml \
+    && mv /tmp/config/contact_points.yaml /etc/grafana/provisioning/alerting/contact_points.yaml \
+    && mv /tmp/config/message_template.yaml /etc/grafana/provisioning/alerting/message_template.yaml \
+    && echo 'alias ll="ls -al"' >> ~/.bashrc
+
+USER grafana
+
+# Run from root directory
+# docker build --file grafana.dockerfile --tag grafana:test .
+# docker run -itd -p 3000:3000 --name grafana --add-host host.docker.internal:host-gateway grafana:test 
+# docker exec -it grafana bash

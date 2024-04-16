@@ -1,0 +1,48 @@
+FROM telegraf:1.27 as base
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=true \
+    PIP_ROOT_USER_ACTION=ignore \
+    PIP_NO_WARN_SCRIPT_LOCATION=0 \
+    PIP_DISABLE_ROOT_WARNING=ignore
+
+RUN apt update \
+    && apt install -y python3  python3-venv \
+    && python3 -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY telegraf/requirements.txt /tmp/requirements.txt
+
+RUN python3 -m pip install --upgrade pip \
+    && pip install -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt \
+    && echo 'alias ll="ls -al"' >> ~/.bashrc
+
+FROM base as telegraf
+
+EXPOSE 57500
+
+ARG TELEGRAF_ORG \
+    TELEGRAF_TOKEN \
+    TELEGRAF_BUCKET
+
+ENV TELEGRAF_ORG=${TELEGRAF_ORG} \
+    TELEGRAF_TOKEN=${TELEGRAF_TOKEN} \
+    TELEGRAF_BUCKET=${TELEGRAF_BUCKET}
+
+COPY telegraf/config/ /tmp/config/
+
+RUN mv /tmp/config/telegraf.conf /etc/telegraf/telegraf.conf \
+    && mv /tmp/config/netconf.conf /etc/telegraf/telegraf.d/netconf.conf \
+    && mv /tmp/config/grpc.conf /etc/telegraf/telegraf.d/grpc.conf \
+    && mv /tmp/config/cat8000v-0_settings.json /home/cat8000v-0_settings.json \
+    && mv /tmp/config/cat8000v-1_settings.json /home/cat8000v-1_settings.json \
+    && mv /tmp/config/cat8000v-2_settings.json /home/cat8000v-2_settings.json \
+    && rm -rf /tmp/config
+
+# Run from root dir
+# docker build --target telegraf --file telegraf.dockerfile --tag telegraf:test .
+# docker run -itd -p 57500:57500 --name telegraf --add-host host.docker.internal:host-gateway telegraf:test 
+# docker exec -it telegraf bash
+# tail -F /tmp/telegraf-grpc.log
