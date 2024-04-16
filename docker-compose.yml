@@ -1,0 +1,59 @@
+version: "3.8"
+services:
+  grafana:
+    build:
+      context: .
+      dockerfile: grafana/dockerfile
+      args:
+        LLM_HTTP_PORT: ${LLM_HTTP_PORT}
+        GRAFANA_TOKEN: ${GRAFANA_TOKEN}
+        WEBEX_ROOM_ID: ${WEBEX_ROOM_ID}
+        GRAFANA_WEB_HOOK: ${GRAFANA_WEB_HOOK}
+        WEBEX_TEAMS_ACCESS_TOKEN: ${WEBEX_TEAMS_ACCESS_TOKEN}
+    image: grafana:${GRAFANA_TAG}
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+      - .env.local
+
+  influxdb:
+    build:
+      context: .
+      dockerfile: influxdb/dockerfile
+      args:
+        DOCKER_INFLUXDB_INIT_MODE: ${INFLUXDB_MODE}
+        DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USERNAME}
+        DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
+        DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
+        DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BUCKET}
+        DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
+    image: influxdb:${INFLUXDB_TAG}
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb:/var/lib/influxdb2
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  telegraf:
+    build:
+      context: .
+      dockerfile: telegraf/dockerfile
+      args:
+        TELEGRAF_ORG: ${TELEGRAF_ORG}
+        TELEGRAF_TOKEN: ${TELEGRAF_TOKEN}
+        TELEGRAF_BUCKET: ${TELEGRAF_BUCKET}
+    image: telegraf:${TELEGRAF_TAG}
+    container_name: telegraf
+    ports:
+      - "57500:57500"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  influxdb:
