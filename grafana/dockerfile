@@ -1,4 +1,4 @@
-FROM  grafana/grafana-oss:10.3.1
+FROM  grafana/grafana-oss:10.4.2
 
 EXPOSE 3000
 

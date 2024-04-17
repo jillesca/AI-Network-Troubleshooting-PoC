@@ -7,7 +7,7 @@ export
 all:	build-all
 
 build-all:
-		-docker-compose down
+		$(MAKE) clean-all
 		docker-compose up --build --detach
 
 build-%:
@@ -19,3 +19,6 @@ logs-%:
 
 cli-%:
 		docker-compose exec $* bash
+
+clean-all:
+		-docker-compose down

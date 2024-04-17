@@ -1,4 +1,4 @@
-FROM influxdb:2.7
+FROM influxdb:2.7.6
 
 EXPOSE 8086
 
