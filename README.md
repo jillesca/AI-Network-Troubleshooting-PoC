@@ -9,3 +9,8 @@ Use the provided Makefile to manage Docker services for grafana, influxdb, and t
 - **Build and run all services**: `make all`
 
 Replace `<service>` with the service name (grafana, influxdb, telegraf).
+
+### webex details
+
+Get room id
+<https://developer.webex.com/docs/api/v1/rooms/list-rooms>

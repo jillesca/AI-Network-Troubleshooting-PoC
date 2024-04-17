@@ -1,17 +1,21 @@
+include .env.local
+include .env
+export
+
 .PHONY: all build run logs cli
 
-all: build-grafana build-influxdb build-telegraf
+all:	build-all
+
+build-all:
+		-docker-compose down
+		docker-compose up --build --detach
 
 build-%:
-    -docker-compose rm -f $*
-    docker-compose build $*
-    docker-compose up -d $*
-
-run-%:
-    docker-compose up -d $*
+		-docker-compose rm -f $*
+		docker-compose up --build --detach $*
 
 logs-%:
-    docker-compose logs -f $*
+		docker-compose logs -f $*
 
 cli-%:
-    docker-compose exec $* bash
+		docker-compose exec $* bash
