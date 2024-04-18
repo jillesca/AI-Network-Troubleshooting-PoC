@@ -87,21 +87,21 @@ class PyATSConnection:
         return False
 
 
-def test_get_interfaces_status(device_name: str) -> dict:
+def api_connect(device_name: str, method: str, args: dict = None):
     """
-    Get the status of interfaces on a device.
+    Connects to a device using PyATSConnection API and executes a specified method.
+
+    Args:
+      device_name (str): The name of the device to connect to.
+      method (str): The name of the method to execute on the device.
+      args (dict, optional): A dictionary of arguments to pass to the method. Defaults to None.
+
+    Returns:
+      dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
-
-    with PyATSConnection(device_name=device_name) as device:
-        return device.api.get_interfaces_status()
-
-
-if __name__ == "__main__":
-    """
-    To run locally, you need to adjust the import statements.
-    TODO: Find a better way to import when running locally.
-    """
-    from pprint import pprint as pp
-    from tests.load_test_settings import device
-
-    pp(test_get_interfaces_status(device_name=device))
+    with PyATSConnection(device_name=device_name) as device_connection:
+        method = getattr(device_connection.api, method)
+        try:
+            return method(**args) if args else method()
+        except Exception as e:
+            return {method.__name__: e}

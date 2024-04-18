@@ -1,9 +1,19 @@
+"""
+Wrapper functions to work with langchain tools and openAI
+"""
+
 from langchain.agents import tool
 
-from pyats_tools.pyats_connection import api_connect
+from pyats_tools.pyats_utils import output_to_json
+from pyats_tools.api.device_health_state import (
+    health_cpu,
+    health_memory,
+    health_logging,
+)
 
 
-def health_memory(device_name: str) -> dict:
+@tool
+def get_health_memory(device_name: str) -> dict:
     """
     Retrieves the memory health information for a given device.
 
@@ -13,13 +23,11 @@ def health_memory(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the memory health information. Empty is good.
     """
-    result = api_connect(device_name, "health_memory")
-    if not result["health_data"]:
-        return {"message": "No memory health issues detected on the device"}
-    return result
+    return output_to_json(health_memory(device_name))
 
 
-def health_cpu(device_name: str) -> dict:
+@tool
+def get_health_cpu(device_name: str) -> dict:
     """
     Retrieves the CPU health information for a given device.
 
@@ -29,13 +37,14 @@ def health_cpu(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the CPU health information. Empty is good.
     """
-    result = api_connect(device_name, "health_cpu")
-    if not result["health_data"]:
-        return {"message": "No CPU health issues detected on the device"}
-    return result
+    return output_to_json(health_cpu(device_name))
 
 
-def health_logging(device_name: str, keywords: list[str] = None) -> dict:
+@tool
+def get_health_logging(
+    device_name: str,
+    keywords: list[str] = None,
+) -> dict:
     """
     Retrieves health logging information from a device.
 
@@ -56,9 +65,4 @@ def health_logging(device_name: str, keywords: list[str] = None) -> dict:
             "own",
             "ADJCHANGE",
         ]
-
-    result = api_connect(device_name, "health_logging", {"keywords": keywords})
-
-    if not result["health_data"]:
-        return {"message": "No issues detected on the logs of the device"}
-    return result
+    return output_to_json(health_logging(device_name, keywords))

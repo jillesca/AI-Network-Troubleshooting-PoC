@@ -1,5 +1,5 @@
 from pyats_tools.pyats_inventory import get_devices_list_available
-from pyats_tools.api.device_health_state import (
+from pyats_tools.api.device_health_state_langchain import (
     get_health_memory,
     get_health_cpu,
     get_health_logging,
