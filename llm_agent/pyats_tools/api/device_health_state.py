@@ -1,5 +1,3 @@
-from langchain.agents import tool
-
 from pyats_tools.pyats_connection import api_connect
 
 
@@ -13,7 +11,7 @@ def health_memory(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the memory health information. Empty is good.
     """
-    result = api_connect(device_name, "health_memory")
+    result = api_connect(device_name=device_name, method="health_memory")
     if not result["health_data"]:
         return {"message": "No memory health issues detected on the device"}
     return result
@@ -29,7 +27,7 @@ def health_cpu(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the CPU health information. Empty is good.
     """
-    result = api_connect(device_name, "health_cpu")
+    result = api_connect(device_name=device_name, method="health_cpu")
     if not result["health_data"]:
         return {"message": "No CPU health issues detected on the device"}
     return result
@@ -57,7 +55,11 @@ def health_logging(device_name: str, keywords: list[str] = None) -> dict:
             "ADJCHANGE",
         ]
 
-    result = api_connect(device_name, "health_logging", {"keywords": keywords})
+    result = api_connect(
+        device_name=device_name,
+        method="health_logging",
+        args={"keywords": keywords},
+    )
 
     if not result["health_data"]:
         return {"message": "No issues detected on the logs of the device"}

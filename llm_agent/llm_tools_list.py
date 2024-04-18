@@ -4,7 +4,7 @@ from pyats_tools.api.device_health_state_langchain import (
     get_health_cpu,
     get_health_logging,
 )
-from pyats_tools.api.interfaces_config_api import (
+from pyats_tools.api.interfaces_config_api_langchain import (
     get_interface_running_config,
     get_interfaces_description,
 )

@@ -3,8 +3,8 @@ This module provides a class for managing pyATS connections.
 """
 
 import logging
-from typing import Optional
 from dataclasses import dataclass
+from typing import Optional, Union, Dict
 
 
 from pyats.topology import loader, Device
@@ -87,7 +87,11 @@ class PyATSConnection:
         return False
 
 
-def api_connect(device_name: str, method: str, args: dict = None):
+def api_connect(
+    device_name: str,
+    method: str,
+    args: Optional[Union[str, Dict[str, str]]] = None,
+):
     """
     Connects to a device using PyATSConnection API and executes a specified method.
 
@@ -100,8 +104,33 @@ def api_connect(device_name: str, method: str, args: dict = None):
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
     with PyATSConnection(device_name=device_name) as device_connection:
-        method = getattr(device_connection.api, method)
+        method_to_call = getattr(device_connection.api, method)
         try:
-            return method(**args) if args else method()
+            if isinstance(args, dict):
+                return method_to_call(**args)
+            elif isinstance(args, str):
+                return method_to_call(args)
+            else:
+                return method_to_call()
+        except Exception as e:
+            return {method.__name__: e}
+
+
+def parse_connect(device_name: str, string_to_parse: str):
+    """
+    Connects to a device using PyATSConnection parse and executes a specified method.
+
+    Args:
+      device_name (str): The name of the device to connect to.
+      method (str): The name of the method to execute on the device.
+      args (dict, optional): A dictionary of arguments to pass to the method. Defaults to None.
+
+    Returns:
+      dict: A dictionary containing the result of the method execution or an exception if an error occurs.
+    """
+    with PyATSConnection(device_name=device_name) as device_connection:
+        method = getattr(device_connection, "parse")
+        try:
+            return method(string_to_parse)
         except Exception as e:
             return {method.__name__: e}
