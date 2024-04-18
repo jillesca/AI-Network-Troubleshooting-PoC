@@ -6,11 +6,12 @@ import logging
 from typing import Optional
 from dataclasses import dataclass
 
+
 from pyats.topology import loader, Device
 
 from logging_config.main import setup_logging
 from load_global_settings import TESTBED_FILE
-from pyats_tools.pyats_inventory import _get_devices_list_available
+from pyats_tools.pyats_inventory import get_devices_from_inventory
 
 logger = setup_logging()
 NUMBER_OF_TRIES_TO_CONNECT = 10
@@ -46,7 +47,7 @@ class PyATSConnection:
         try:
             self.device_pyats = testbed.devices[self.device_name]
         except KeyError as exc:
-            devices_available = _get_devices_list_available()
+            devices_available = get_devices_from_inventory()
             raise KeyError(
                 f"Device {self.device_name} not found in testbed. Devices available are: {devices_available}"
             ) from exc
@@ -70,7 +71,6 @@ class PyATSConnection:
             via="cli",
             learn_hostname=True,
             connection_timeout=10,
-            # prompt_recovery=True,
             log_stdout=self._get_logging_level(),
         )
 

@@ -13,10 +13,10 @@ def get_devices_list_available() -> list:
     Returns:
       A list representation of the available devices.
     """
-    return output_to_json(_get_devices_list_available())
+    return output_to_json(get_devices_from_inventory())
 
 
-def _get_devices_list_available() -> list:
+def get_devices_from_inventory() -> list:
     topology = loader.load(TESTBED_FILE)
     return list(topology.devices.names)
 
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     To run locally, you need to adjust the import statements.
     TODO: Find a better way to import when running locally.
     """
-    print(_get_devices_list_available())
+    print(get_devices_from_inventory())

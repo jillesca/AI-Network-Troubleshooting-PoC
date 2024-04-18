@@ -20,5 +20,5 @@ logs-%:
 cli-%:
 		docker-compose exec $* bash
 
-clean-all:
+clean:
 		-docker-compose down
