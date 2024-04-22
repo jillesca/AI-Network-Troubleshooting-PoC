@@ -1,4 +1,8 @@
-from pyats_tools.pyats_connection import api_connect
+"""
+Script to retrieve the health state of a device using the pyATS framework.
+"""
+
+from llm_agent.pyats.pyats_connection import api_connect
 
 
 def health_memory(device_name: str) -> dict:

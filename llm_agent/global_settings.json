@@ -1,5 +1,5 @@
 {
-  "testbed_file": "llm_agent/pyats_tools/pyats_testbed.yaml",
+  "testbed_file": "llm_agent/pyats/pyats_testbed.yaml",
   "llm_http_port": 5001,
   "host_url": "0.0.0.0"
 }

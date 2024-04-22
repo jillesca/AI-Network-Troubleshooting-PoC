@@ -1,8 +1,8 @@
 from pyats.topology import loader
 from langchain.agents import tool
 
-from load_global_settings import TESTBED_FILE
-from utils.text_utils import output_to_json
+from llm_agent.load_global_settings import TESTBED_FILE
+from llm_agent.utils.text_utils import output_to_json
 
 
 @tool

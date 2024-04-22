@@ -5,10 +5,11 @@ https://github.com/mCodingLLC/VideosSampleCode/blob/master/videos/135_modern_log
 See youtube video associated with this code:
 https://youtu.be/9L77QExPmI0
 """
+
 import logging.config
 import logging.handlers
 import pathlib
-from utils.text_utils import load_json_file
+from llm_agent.utils.text_utils import load_json_file
 
 
 LOGGING_CONFIG_FILE = "llm_agent/logging_config/logging_settings.json"

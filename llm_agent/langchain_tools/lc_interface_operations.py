@@ -4,8 +4,8 @@ Wrapper functions to work with langchain tools and openAI
 
 from langchain.agents import tool
 
-from pyats_tools.pyats_utils import output_to_json
-from llm_agent.pyats_tools.api.interface_operations import (
+from pyats.pyats_utils import output_to_json
+from llm_agent.pyats.api.interface_operations import (
     shut_interface,
     unshut_interface,
 )

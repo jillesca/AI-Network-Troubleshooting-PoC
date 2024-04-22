@@ -15,8 +15,9 @@ Variables:
     WEBEX_APPROVED_USERS_MAIL (str): The approved users mail for Webex, retrieved from an environment variable.
     OPENAI_API_KEY (str): The API key for OpenAI, retrieved from an environment variable.
 """
+
 import os
-from utils.text_utils import load_json_file
+from llm_agent.utils.text_utils import load_json_file
 
 
 def get_environment_variable(envvar: str) -> str:

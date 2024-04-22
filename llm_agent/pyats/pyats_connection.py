@@ -9,9 +9,9 @@ from typing import Optional, Union, Dict
 
 from pyats.topology import loader, Device
 
-from logging_config.main import setup_logging
-from load_global_settings import TESTBED_FILE
-from pyats_tools.pyats_inventory import get_devices_from_inventory
+from llm_agent.logging_config.main import setup_logging
+from llm_agent.load_global_settings import TESTBED_FILE
+from llm_agent.pyats.pyats_inventory import get_devices_from_inventory
 
 logger = setup_logging()
 NUMBER_OF_TRIES_TO_CONNECT = 10
@@ -109,6 +109,8 @@ def api_connect(
             if isinstance(args, dict):
                 return method_to_call(**args)
             elif isinstance(args, str):
+                return method_to_call(args)
+            elif isinstance(args, list):
                 return method_to_call(args)
             else:
                 return method_to_call()

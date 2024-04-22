@@ -3,8 +3,8 @@ from genie.libs.parser.iosxe.show_isis import (
     ShowIsisNeighbors,
 )
 
-from pyats_tools.pyats_utils import output_to_json
-from pyats_tools.pyats_connection import PyATSConnection
+from pyats.pyats_utils import output_to_json
+from pyats.pyats_connection import PyATSConnection
 
 
 @tool
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     TODO: Find a better way to import when running locally.
     """
     from pprint import pprint as pp
-    from tests.load_test_settings import test_device, interface_name
+    from test_llm_agent.load_test_settings import test_device, interface_name
 
     # pp(_get_isis_neighbors(device_name=device))
     pp(_get_isis_interfaces(device_name=test_device))
