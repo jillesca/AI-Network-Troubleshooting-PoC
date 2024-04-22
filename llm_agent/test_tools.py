@@ -1,13 +1,23 @@
-from pyats_tools.api.device_health_state import (
-    health_cpu,
-    health_memory,
-    health_logging,
+from pyats_tools.api.interface_operations import (
+    shut_interface,
+    unshut_interface,
 )
+from pyats_tools.api.interface_state import _get_interfaces_status
 
 
 if __name__ == "__main__":
     from pprint import pprint as pp
 
-    pp(health_logging(device_name="cat8000v-0"))
-    pp(health_memory(device_name="cat8000v-0"))
-    pp(health_cpu(device_name="cat8000v-0"))
+    pp(_get_interfaces_status(device_name="cat8000v-0"))
+    pp(
+        shut_interface(
+            device_name="cat8000v-0", interface_name="GigabitEthernet2"
+        )
+    )
+    pp(_get_interfaces_status(device_name="cat8000v-0"))
+    pp(
+        unshut_interface(
+            device_name="cat8000v-0", interface_name="GigabitEthernet2"
+        )
+    )
+    pp(_get_interfaces_status(device_name="cat8000v-0"))
