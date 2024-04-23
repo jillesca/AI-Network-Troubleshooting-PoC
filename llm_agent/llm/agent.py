@@ -15,7 +15,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from unicon.core.errors import ConnectionError
 
-from prompts import SYSTEM_PROMPT
+from llm_agent.llm.prompts import SYSTEM_PROMPT
 from llm_agent.langchain_tools.lc_tools_list import tools
 from llm_agent.logging_config.main import setup_logging
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
