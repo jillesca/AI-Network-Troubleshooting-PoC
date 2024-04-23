@@ -4,8 +4,8 @@ Wrapper functions to work with langchain tools and openAI
 
 from langchain.agents import tool
 
-from pyats.pyats_utils import output_to_json
-from pyats.api.device_health_state import (
+from llm_agent.utils.text_utils import output_to_json
+from llm_agent.pyats.api.device_health_state import (
     health_cpu,
     health_memory,
     health_logging,

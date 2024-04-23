@@ -4,7 +4,7 @@ Wrapper functions to work with langchain tools and openAI
 
 from langchain.agents import tool
 
-from llm_agent.pyats.pyats_utils import output_to_json
+from llm_agent.utils.text_utils import output_to_json
 from llm_agent.pyats.api.isis import (
     isis_neighbors,
     isis_interface_events,
