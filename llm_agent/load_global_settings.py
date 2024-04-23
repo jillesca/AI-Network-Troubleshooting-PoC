@@ -33,7 +33,7 @@ def get_environment_variable(envvar: str) -> str:
     return value
 
 
-GLOBAL_SETTINGS_FILE = "llm_agent/global_settings.json"
+GLOBAL_SETTINGS_FILE = "llm_agent/config/global_settings.json"
 global_config = load_json_file(json_file=GLOBAL_SETTINGS_FILE)
 
 
