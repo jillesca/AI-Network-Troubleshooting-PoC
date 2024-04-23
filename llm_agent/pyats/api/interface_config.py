@@ -10,7 +10,7 @@ def interface_running_config(device_name: str, interface_name: str) -> dict:
     Get the running config of a single interface on a device.
 
     Args:
-      device_name (str): Must come from the function get_devices_list_available
+      device_name (str): The name of the device. Must come from the function get_devices_list_available.
       interface_name (str): The name of the interface.
 
     Returns:
@@ -28,11 +28,11 @@ def interfaces_description(device_name: str) -> dict:
     Get the description of the interfaces per device.
 
     Args:
-      device_name (str): Must come from the function get_devices_list_available
-      interface_name (str): The name of the interface.
+      device_name (str): The name of the device. Must come from the function get_devices_list_available.
 
     Returns:
-      dict: A dictionary containing the status of the interface.
+      dict: A dictionary containing the description of the interfaces. If there is an error getting the description,
+            the value "ERROR_GETTING_INTERFACES_DESCRIPTION" will be returned.
     """
     result = parse_connect(
         device_name=device_name, string_to_parse="show interfaces description"
