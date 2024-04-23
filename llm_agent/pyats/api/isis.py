@@ -1,14 +1,14 @@
-from langchain.agents import tool
 from genie.libs.parser.iosxe.show_isis import (
     ShowIsisNeighbors,
 )
 
-from pyats.pyats_utils import output_to_json
-from pyats.pyats_connection import PyATSConnection
+from llm_agent.pyats.pyats_connection import (
+    parse_connect,
+    PyATSConnection,
+)
 
 
-@tool
-def verify_active_isis_neighbors(device_name: str) -> dict:
+def isis_neighbors(device_name: str) -> dict:
     """
     Retrieves the ISIS neighbors for a given device. Neighbors down are not included.
 
@@ -18,21 +18,14 @@ def verify_active_isis_neighbors(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the ISIS neighbors information.
     """
-    return output_to_json(_get_isis_neighbors(device_name))
-
-
-def _get_isis_neighbors(device_name: str) -> dict:
     with PyATSConnection(device_name=device_name) as device:
         try:
             return ShowIsisNeighbors(device=device).parse()
-        except Exception as e:
-            return {
-                "get_isis_neighbors_error": f"NO_ISIS_NEIGHBORS_FOUND_ON: {device_name}"
-            }
+        except Exception:
+            return {"error": f"NO_ISIS_NEIGHBORS_FOUND_ON: {device_name}"}
 
 
-@tool
-def get_isis_interface_events(device_name: str) -> dict:
+def isis_interface_events(device_name: str) -> dict:
     """
     Retrieves ISIS interface events for a given device.
 
@@ -42,23 +35,17 @@ def get_isis_interface_events(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the ISIS interface events.
     """
-    return output_to_json(_get_isis_interface_events(device_name))
+    cmd = "show isis lsp-log"
+    try:
+        return parse_connect(
+            device_name=device_name,
+            string_to_parse=cmd,
+        )
+    except Exception:
+        return {"error": f"NO_ISIS_CONFIGURED_ON: {device_name}"}
 
 
-def _get_isis_interface_events(device_name: str) -> dict:
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            return device.parse("show isis lsp-log")
-        except Exception as e:
-            return {
-                "get_isis_interface_events_error": f"NO_ISIS_CONFIGURED_ON: {device_name}"
-            }
-
-
-@tool
-def get_isis_interface_information(
-    device_name: str, vrf_name: str = "default"
-) -> list:
+def isis_interfaces(device_name: str, vrf_name: str = "default") -> list:
     """
     Retrieves the ISIS interfaces for a given device and VRF.
 
@@ -70,20 +57,22 @@ def get_isis_interface_information(
       list: A list of ISIS interfaces.
 
     """
-    return output_to_json(_get_isis_interfaces(device_name, vrf_name))
-
-
-def _get_isis_interfaces(device_name: str, vrf_name: str = "default") -> list:
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            data = device.parse("show ip protocols")
-        except Exception as e:
-            return [f"NO_ISIS_INTERFACES_FOUND_FOR_VRF_{vrf_name}"]
-
-        isis_interfaces = _extract_isis_interfaces(data=data)
-        return isis_interfaces.get(
-            vrf_name, f"NO_ISIS_INTERFACES_FOUND_FOR_VRF:{vrf_name}"
+    cmd = "show ip protocols"
+    try:
+        result = parse_connect(
+            device_name=device_name,
+            string_to_parse=cmd,
         )
+    except Exception:
+        return [
+            f"NO_ISIS_INTERFACES_FOUND VRF: {vrf_name}, DEVICE: {device_name}"
+        ]
+
+    intf_isis = _extract_isis_interfaces(data=result)
+    return intf_isis.get(
+        vrf_name,
+        f"NO_ISIS_INTERFACES_FOUND VRF: {vrf_name}, DEVICE: {device_name}",
+    )
 
 
 def _extract_isis_interfaces(data: dict) -> dict:
@@ -100,15 +89,3 @@ def _extract_isis_interfaces(data: dict) -> dict:
         if interfaces is not None:
             result[vrf] = interfaces
     return result
-
-
-if __name__ == "__main__":
-    """
-    To run locally, you need to adjust the import statements.
-    TODO: Find a better way to import when running locally.
-    """
-    from pprint import pprint as pp
-    from test_llm_agent.load_test_settings import test_device, interface_name
-
-    # pp(_get_isis_neighbors(device_name=device))
-    pp(_get_isis_interfaces(device_name=test_device))

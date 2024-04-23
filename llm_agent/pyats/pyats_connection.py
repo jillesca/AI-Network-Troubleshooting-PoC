@@ -103,6 +103,8 @@ def api_connect(
     Returns:
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
+    logger.info(f"EXECUTING METHOD: {method}, DEVICE: {device_name}")
+    logger.debug(f"ARGS: {args}")
     with PyATSConnection(device_name=device_name) as device_connection:
         method_to_call = getattr(device_connection.api, method)
         try:
@@ -130,6 +132,7 @@ def parse_connect(device_name: str, string_to_parse: str):
     Returns:
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
+    logger.info(f"PARSING: {string_to_parse}, DEVICE: {device_name}")
     with PyATSConnection(device_name=device_name) as device_connection:
         method = getattr(device_connection, "parse")
         try:
