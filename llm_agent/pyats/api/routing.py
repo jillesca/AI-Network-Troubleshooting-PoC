@@ -1,11 +1,11 @@
-from langchain.agents import tool
+""" 
+Script to retrieve routing information from a device using the pyATS framework.
+"""
 
-from pyats.pyats_utils import output_to_json
-from pyats.pyats_connection import PyATSConnection
+from llm_agent.pyats.pyats_connection import api_connect
 
 
-@tool
-def get_vrf_present(device_name: str) -> list:
+def vrfs_present(device_name: str) -> list:
     """
     Get all vrfs from device
 
@@ -13,23 +13,18 @@ def get_vrf_present(device_name: str) -> list:
       device_name (str): Must come from the function get_devices_list_available
 
     Returns:
-      list: List of vrfs present on the device
+      list: List of vrfs present on the device. If no vrfs are found, returns ["NO_VRFs_FOUND"].
     """
-    return output_to_json(_get_vrf_present(device_name))
+    result = api_connect(
+        device_name=device_name,
+        method="get_vrf_vrfs",
+    )
+    if not result:
+        return [f"NO_VRFs_FOUND on device {device_name}"]
+    return list(result.keys())
 
 
-def _get_vrf_present(device_name: str) -> list:
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            return list(device.api.get_vrf_vrfs().keys())
-        except Exception:
-            return ["NO_VRFs_FOUND"]
-
-
-@tool
-def get_interface_interfaces_under_vrf(
-    device_name: str, vrf_name: str = None
-) -> list:
+def interface_interfaces_under_vrf(device_name: str, vrf_name: str) -> list:
     """
     Get interfaces configured under specific Vrf
 
@@ -40,66 +35,37 @@ def get_interface_interfaces_under_vrf(
     Returns:
       list: List of interfaces configured under the specified VRF
     """
-    return output_to_json(
-        _get_interface_interfaces_under_vrf(device_name, vrf_name)
+    result = api_connect(
+        device_name=device_name,
+        method="get_interface_interfaces_under_vrf",
+        args=vrf_name,
     )
+    if not result:
+        return [
+            f"NO_INTERFACES_FOUND_FOR_VRF: {vrf_name} on DEVICE {device_name}"
+        ]
+    return result
 
 
-def _get_interface_interfaces_under_vrf(
-    device_name: str, vrf_name: str = None
-) -> list:
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            return device.api.get_interface_interfaces_under_vrf(vrf=vrf_name)
-        except Exception:
-            return [f"NO_INTERFACES_FOUND_FOR_VRF_{vrf_name}"]
-
-
-@tool
-def get_routing_routes(
+def route_entries(
     device_name: str, vrf_name: str = None, address_family: str = "ipv4"
 ) -> dict:
     """
-    TODO: Need to reduce the amount of inrormation returned
-    Execute 'show ip route vrf <vrf>' and retrieve the routes
+    Execute 'show ip route vrf <vrf>' and retrieve the routes.
 
     Args:
-      device_name (str): Must come from the function get_devices_list_available
+      device_name (str): The name of the device. Must come from the function get_devices_list_available.
       vrf_name (str, optional): The name of the VRF. Defaults to None.
       address_family (str, optional): The address family name. Defaults to "ipv4".
 
     Returns:
       dict: A dictionary containing the received routes.
     """
-    return output_to_json(
-        _get_routing_routes(device_name, vrf_name, address_family)
+    result = api_connect(
+        device_name=device_name,
+        method="get_routing_routes",
+        args={"vrf": vrf_name, "address_family": address_family},
     )
-
-
-def _get_routing_routes(
-    device_name: str, vrf_name: str = None, address_family: str = "ipv4"
-) -> dict:
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            return device.api.get_routing_routes(
-                vrf=vrf_name, address_family=address_family
-            )
-        except Exception:
-            return {"error": f"NO_ROUTES_FOUND_FOR_VRF_{vrf_name}"}
-
-
-if __name__ == "__main__":
-    """
-    To run locally, you need to adjust the import statements.
-    TODO: Find a better way to import when running locally.
-    """
-    from pprint import pprint as pp
-    from test_llm_agent.load_test_settings import test_device
-
-    pp(_get_vrf_present(device_name=test_device))
-    pp(
-        _get_interface_interfaces_under_vrf(
-            device_name=test_device, vrf_name="Mgmt-intf"
-        )
-    )
-    pp(_get_routing_routes(device_name=test_device, vrf_name="Mgmt-intf"))
+    if not result:
+        return {"error": f"NO_ROUTES_FOUND_FOR_VRF_{vrf_name}"}
+    return result

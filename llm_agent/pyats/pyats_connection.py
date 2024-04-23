@@ -62,7 +62,7 @@ class PyATSConnection:
                 self._connect_to_device()
                 break
             except ConnectionError as e:
-                logger.error(f"Connection failed: {e}")
+                logger.error("Connection failed: %s", e)
 
     def _connect_to_device(self) -> None:
         logger.info("ESTABLISHING CONNECTION")
@@ -80,7 +80,7 @@ class PyATSConnection:
     def __exit__(self, exc_type, exc_val, exc_tb):
         logger.debug("CLOSING CONNECTION")
         if exc_type is not None:
-            logger.error(f"An error occurred: {exc_val}")
+            logger.error("An error occurred: %s", exc_val)
         self.device_pyats.disconnect()
         logger.info("CONNECTION CLOSED")
 
@@ -91,7 +91,7 @@ def api_connect(
     device_name: str,
     method: str,
     args: Optional[Union[str, Dict[str, str]]] = None,
-):
+) -> any:
     """
     Connects to a device using PyATSConnection API and executes a specified method.
 
@@ -103,8 +103,8 @@ def api_connect(
     Returns:
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
-    logger.info(f"EXECUTING METHOD: {method}, DEVICE: {device_name}")
-    logger.debug(f"ARGS: {args}")
+    logger.info("EXECUTING METHOD: %s, DEVICE: %s", method, device_name)
+    logger.info("ARGS: %s", args)
     with PyATSConnection(device_name=device_name) as device_connection:
         method_to_call = getattr(device_connection.api, method)
         try:
@@ -120,7 +120,7 @@ def api_connect(
             return {method.__name__: e}
 
 
-def parse_connect(device_name: str, string_to_parse: str):
+def parse_connect(device_name: str, string_to_parse: str) -> any:
     """
     Connects to a device using PyATSConnection parse and executes a specified method.
 
@@ -132,7 +132,7 @@ def parse_connect(device_name: str, string_to_parse: str):
     Returns:
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
-    logger.info(f"PARSING: {string_to_parse}, DEVICE: {device_name}")
+    logger.info("Parsing: %s, DEVICE: %s", string_to_parse, device_name)
     with PyATSConnection(device_name=device_name) as device_connection:
         method = getattr(device_connection, "parse")
         try:
