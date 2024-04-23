@@ -2,7 +2,7 @@
 Script to perform operations on a device interface using the pyATS framework.
 """
 
-from llm_agent.pyats.connection import api_connect
+from llm_agent.pyats.connection_methods import api_connect
 
 
 def shut_interface(device_name: str, interface_name: str) -> dict:
