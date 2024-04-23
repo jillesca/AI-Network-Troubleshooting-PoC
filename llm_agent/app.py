@@ -7,12 +7,13 @@ loads global settings, and initializes the chat agent and the Webex bot manager.
 It defines a Pydantic model for the message data and two POST endpoints:
 one for sending messages to the chat agent and another for processing alerts.
 """
+
 import uvicorn
 import threading
 from fastapi import FastAPI
 
 from logging_config.main import setup_logging
-from load_global_settings import (
+from llm_agent.config.load_global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )

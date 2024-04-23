@@ -5,10 +5,11 @@ The main class is `WebexBotManager`, which encapsulates the logic for creating a
 
 This module is based on the idea from: https://github.com/fbradyirl/webex_bot
 """
+
 from webexteamssdk import WebexTeamsAPI
 from webex_bot.webex_bot import WebexBot
 from webex_chat.ai_command import AiCommand
-from load_global_settings import (
+from llm_agent.config.load_global_settings import (
     WEBEX_APPROVED_USERS_MAIL,
     WEBEX_TEAMS_ACCESS_TOKEN,
 )

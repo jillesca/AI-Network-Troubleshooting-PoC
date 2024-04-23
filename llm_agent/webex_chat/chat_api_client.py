@@ -1,6 +1,6 @@
 import requests
 
-from load_global_settings import (
+from llm_agent.config.load_global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )
