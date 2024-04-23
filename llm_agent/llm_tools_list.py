@@ -2,7 +2,7 @@
 Import all the tools from the langchain_tools folder
 """
 
-from llm_agent.pyats.inventory import get_devices_list_available
+from llm_agent.langchain_tools.lc_inventory import get_devices_list_available
 from llm_agent.langchain_tools.lc_device_health_state import (
     get_health_memory,
     get_health_cpu,
