@@ -1,7 +1,7 @@
 from webex_bot.models.command import Command
-from webexteamssdk.models.cards.actions import OpenUrl
-from webex_bot.formatting import quote_info, quote_warning
+from webex_bot.formatting import quote_info
 from webex_bot.models.response import response_from_adaptive_card
+from webexteamssdk.models.cards.actions import OpenUrl
 from webexteamssdk.models.cards import (
     Colors,
     TextBlock,
@@ -16,8 +16,8 @@ from webexteamssdk.models.cards import (
     FactSet,
 )
 
-from logging_config.main import setup_logging
-from webex_chat.chat_api_client import send_message_to_chat_api
+from llm_agent.logging_config.main import setup_logging
+from llm_agent.webex_chat.chat_api_client import send_message_to_chat_api
 
 logger = setup_logging()
 

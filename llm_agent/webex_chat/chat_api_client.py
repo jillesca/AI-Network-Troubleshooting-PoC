@@ -5,7 +5,6 @@ from llm_agent.config.load_global_settings import (
     LLM_HTTP_PORT,
 )
 
-import requests
 
 NUMBER_OF_TRIES_TO_CONNECT = 10
 
@@ -22,7 +21,7 @@ def send_message_to_chat_api(message: str) -> str:
     """
     url = f"http://{HOST_URL}:{LLM_HTTP_PORT}/chat"
     data = {"message": message}
-    for _ in range(NUMBER_OF_TRIES_TO_CONNECT):  # try twice
+    for _ in range(NUMBER_OF_TRIES_TO_CONNECT):
         try:
             response = requests.post(url, json=data, timeout=120)
             if response.status_code == 200:
