@@ -11,7 +11,7 @@ from pyats.topology import loader, Device
 
 from llm_agent.logging_config.main import setup_logging
 from llm_agent.load_global_settings import TESTBED_FILE
-from llm_agent.pyats.pyats_inventory import get_devices_from_inventory
+from llm_agent.pyats.inventory import get_devices_from_inventory
 
 logger = setup_logging()
 NUMBER_OF_TRIES_TO_CONNECT = 10

@@ -2,7 +2,7 @@ from genie.libs.parser.iosxe.show_isis import (
     ShowIsisNeighbors,
 )
 
-from llm_agent.pyats.pyats_connection import (
+from llm_agent.pyats.connection import (
     parse_connect,
     PyATSConnection,
 )

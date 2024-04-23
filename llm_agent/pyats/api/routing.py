@@ -2,7 +2,7 @@
 Script to retrieve routing information from a device using the pyATS framework.
 """
 
-from llm_agent.pyats.pyats_connection import api_connect
+from llm_agent.pyats.connection import api_connect
 
 
 def vrfs_present(device_name: str) -> list:

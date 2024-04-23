@@ -1,7 +1,3 @@
-""" 
-Script to perform operations on a device interface using the pyATS framework.
-"""
-
 from llm_agent.pyats.connection import api_connect
 
 
