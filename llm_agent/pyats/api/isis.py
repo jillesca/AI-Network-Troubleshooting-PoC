@@ -1,10 +1,9 @@
-from genie.libs.parser.iosxe.show_isis import (
-    ShowIsisNeighbors,
-)
+""" 
+This module contains the ISIS API functions. 
+"""
 
 from llm_agent.pyats.connection_methods import (
     parse_connect,
-    PyATSConnection,
 )
 
 
@@ -18,11 +17,13 @@ def isis_neighbors(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the ISIS neighbors information.
     """
-    with PyATSConnection(device_name=device_name) as device:
-        try:
-            return ShowIsisNeighbors(device=device).parse()
-        except Exception:
-            return {"error": f"NO_ISIS_NEIGHBORS_FOUND_ON: {device_name}"}
+    try:
+        return parse_connect(
+            device_name=device_name,
+            string_to_parse="show isis neighbors",
+        )
+    except Exception:
+        return {"error": f"NO_ISIS_NEIGHBORS_FOUND_ON: {device_name}"}
 
 
 def isis_interface_events(device_name: str) -> dict:
@@ -35,11 +36,10 @@ def isis_interface_events(device_name: str) -> dict:
     Returns:
       dict: A dictionary containing the ISIS interface events.
     """
-    cmd = "show isis lsp-log"
     try:
         return parse_connect(
             device_name=device_name,
-            string_to_parse=cmd,
+            string_to_parse="show isis lsp-log",
         )
     except Exception:
         return {"error": f"NO_ISIS_CONFIGURED_ON: {device_name}"}
@@ -57,11 +57,10 @@ def isis_interfaces(device_name: str, vrf_name: str = "default") -> list:
       list: A list of ISIS interfaces.
 
     """
-    cmd = "show ip protocols"
     try:
         result = parse_connect(
             device_name=device_name,
-            string_to_parse=cmd,
+            string_to_parse="show ip protocols",
         )
     except Exception:
         return [
