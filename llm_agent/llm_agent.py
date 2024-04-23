@@ -12,7 +12,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from unicon.core.errors import ConnectionError
 
-from llm_tools_list import tools
+from llm_agent.langchain_tools.lc_tools_list import tools
 from logging_config.main import setup_logging
 from utils.text_utils import remove_white_spaces, output_to_json
 from fastapi_models import GrafanaWebhookMessage
