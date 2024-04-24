@@ -2,7 +2,6 @@
 This module represents a command to interact with an AI based on OpenAI's. 
 """
 
-import logging
 from webex_bot.models.command import Command
 from webex_bot.formatting import quote_info
 from webex_bot.models.response import response_from_adaptive_card
@@ -21,10 +20,8 @@ from webexteamssdk.models.cards import (
     FactSet,
 )
 
-from llm_agent.config.global_settings import LOGGER_NAME
+from llm_agent.logging_config.logging_setup import logger
 from llm_agent.webex_chat.chat_api_client import send_message_to_chat_api
-
-logger = logging.getLogger(LOGGER_NAME)
 
 
 OPENAI_ICON = "https://github.com/fbradyirl/fbradyirl.github.io/raw/master/static/img/OpenAI_logo-100x70-rounded.png"

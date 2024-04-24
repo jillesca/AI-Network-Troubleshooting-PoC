@@ -17,12 +17,12 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from unicon.core.errors import ConnectionError
 
 from llm_agent.llm.prompts import SYSTEM_PROMPT
-from llm_agent.config.global_settings import LOGGER_NAME
+from llm_agent.logging_config.logging_setup import logger
 from llm_agent.langchain_tools.lc_tools_list import tools
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage
 
-logger = logging.getLogger(LOGGER_NAME)
+logging.getLogger().setLevel(logging.ERROR)
 
 
 NOTIFICATION_PROMPT = """
@@ -85,7 +85,7 @@ class LLMChatAgent:
         the agent will try to connect again to the device. This can go on forever.
         The agent stoppped at 3 attempts to connect to the device.
         """
-        logger.info("CHAT_SENT_TO_LLM: %s", message)
+        logger.debug("CHAT_SENT_TO_LLM: %s", message)
         try:
             return self._agent_executor(message)
         except (ValidationError, ConnectionError, KeyError) as e:

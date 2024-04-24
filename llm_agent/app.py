@@ -12,7 +12,7 @@ import threading
 import uvicorn
 from fastapi import FastAPI
 
-from llm_agent.logging_config.logging_setup import setup_logging
+from llm_agent.logging_config.logging_setup import logger
 from llm_agent.config.global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
@@ -23,7 +23,6 @@ from llm_agent.fastAPI.models import Message, GrafanaWebhookMessage
 
 
 app = FastAPI()
-logger = setup_logging()
 chat_agent = LLMChatAgent()
 webex_bot_manager = WebexBotManager()
 
@@ -39,7 +38,7 @@ def chat_to_llm(message: Message) -> str:
     Returns:
       str: The response from the chat agent.
     """
-    logger.debug("MESSAGE_RECEIVED: %s", message.message)
+    logger.info("WEBEX_MESSAGE_SENT_TO_LLM: %s", message.message)
     return chat_agent.chat(message.message)
 
 
@@ -58,7 +57,8 @@ async def alert(message: GrafanaWebhookMessage) -> dict:
 
 def process_alert(message: Message) -> None:
     """
-    This function sends the alert to the LLM and sends a notification to the Webex room.
+    This function sends the alert to the LLM
+    and sends the result of the initial analysis to the Webex room.
     """
     notification = chat_agent.notification(message)
     notify(notification)
@@ -68,7 +68,7 @@ def notify(notification: str) -> None:
     """
     Sends a notification message.
     """
-    logger.info("SENDING_NOTIFICATION: %s", notification)
+    logger.info("SENDING_NOTIFICATON_TO_WEBEX: %s", notification)
     webex_bot_manager.send_notification(notification)
 
 

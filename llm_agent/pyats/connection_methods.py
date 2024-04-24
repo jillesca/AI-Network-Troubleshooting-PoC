@@ -2,13 +2,10 @@
 This module provides functions for connecting to devices using PyATSConnection API. 
 """
 
-import logging
 from typing import Optional, Union, Dict
 
-from llm_agent.config.global_settings import LOGGER_NAME
+from llm_agent.logging_config.logging_setup import logger
 from llm_agent.pyats.connection_handler import PyATSConnection
-
-logger = logging.getLogger(LOGGER_NAME)
 
 
 def api_connect(

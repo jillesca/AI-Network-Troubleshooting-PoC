@@ -2,7 +2,6 @@
 This module provides a class for managing pyATS connections.
 """
 
-import logging
 from dataclasses import dataclass
 from typing import Optional
 
@@ -10,9 +9,9 @@ from typing import Optional
 from pyats.topology import loader, Device
 
 from llm_agent.pyats.inventory import get_devices_from_inventory
-from llm_agent.config.global_settings import LOGGER_NAME, TESTBED_FILE
+from llm_agent.config.global_settings import TESTBED_FILE
+from llm_agent.logging_config.logging_setup import logger
 
-logger = logging.getLogger(LOGGER_NAME)
 
 NUMBER_OF_TRIES_TO_CONNECT = 10
 

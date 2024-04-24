@@ -16,10 +16,29 @@ from llm_agent.config.global_settings import (
 )
 
 
-logger = logging.getLogger(LOGGER_NAME)
+def setup_logging():
+    """
+    Set up logging configuration.
+
+    This function loads the logging configuration from a JSON file,
+    ensures the log file exists, and configures the logging module.
+
+    Returns:
+      logger: The logger object.
+
+    """
+    config_file = pathlib.Path(LOGGING_CONFIG_FILE)
+    config = load_json_file(config_file)
+
+    log_file = _get_log_file_name(config)
+    _ensure_log_file_exists(log_file)
+
+    logging.config.dictConfig(config)
+
+    return logging.getLogger(LOGGER_NAME)
 
 
-def ensure_log_file_exists(filename):
+def _ensure_log_file_exists(filename):
     """
     Ensures a log file exists. If it doesn't, creates it.
 
@@ -35,7 +54,7 @@ def ensure_log_file_exists(filename):
             pass
 
 
-def get_log_file_name(config):
+def _get_log_file_name(config):
     """
     Extracts the log file name from the configuration.
 
@@ -48,33 +67,13 @@ def get_log_file_name(config):
     return config["handlers"]["file"]["filename"]
 
 
-def setup_logging():
-    """
-    Set up logging configuration.
-
-    This function loads the logging configuration from a JSON file,
-    ensures the log file exists, and configures the logging module.
-
-    Returns:
-      logger: The logger object.
-
-    """
-    config_file = pathlib.Path(LOGGING_CONFIG_FILE)
-    config = load_json_file(config_file)
-
-    log_file = get_log_file_name(config)
-    ensure_log_file_exists(log_file)
-
-    logging.config.dictConfig(config)
-
-    return logger
+logger = setup_logging()
 
 
 def main():
     """
     It sets up the logger and demonstrates logging at different levels.
     """
-    logger = setup_logging()
     logger.debug("debug message", extra={"x": "hello"})
     logger.info("info message")
     logger.warning("warning message")

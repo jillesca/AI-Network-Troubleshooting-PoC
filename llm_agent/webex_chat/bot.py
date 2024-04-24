@@ -18,9 +18,9 @@ from llm_agent.config.global_settings import (
 logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
 
-logging.getLogger(
-    "webex_bot.websockets.webex_websocket_client._connect_and_listen"
-).setLevel(logging.INFO)
+logging.getLogger("webex_bot.websockets.webex_websocket_client").setLevel(
+    logging.INFO
+)
 
 
 def get_webex_room_id(webex_api: WebexTeamsAPI) -> str:

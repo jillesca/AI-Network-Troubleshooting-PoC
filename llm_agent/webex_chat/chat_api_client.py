@@ -3,20 +3,16 @@ This module contains the function to send a message to the chat API.
 """
 
 import time
-import logging
 import requests
 
 from llm_agent.config.global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )
-from llm_agent.config.global_settings import LOGGER_NAME
-
+from llm_agent.logging_config.logging_setup import logger
 
 FASTAPI_REST_PATH = "chat"
 MAX_NUMBER_OF_TRIES_TO_CONNECT = 11
-
-logger = logging.getLogger(LOGGER_NAME)
 
 
 def send_message_to_chat_api(message: str) -> str:
