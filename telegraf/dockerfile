@@ -1,4 +1,5 @@
-FROM telegraf:1.30.1 as base
+ARG TELEGRAF_VERSION
+FROM telegraf:${TELEGRAF_VERSION} as base
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=true \

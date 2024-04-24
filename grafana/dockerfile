@@ -1,4 +1,5 @@
-FROM  grafana/grafana-oss:10.4.2
+ARG GRAFANA_VERSION
+FROM grafana/grafana-oss:${GRAFANA_VERSION}
 
 EXPOSE 3000
 
