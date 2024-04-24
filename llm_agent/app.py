@@ -39,7 +39,7 @@ def chat_to_llm(message: Message) -> str:
     Returns:
       str: The response from the chat agent.
     """
-    logger.info("MESSAGE_RECEIVED: %s", message.message)
+    logger.debug("MESSAGE_RECEIVED: %s", message.message)
     return chat_agent.chat(message.message)
 
 

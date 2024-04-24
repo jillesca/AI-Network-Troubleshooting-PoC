@@ -6,6 +6,7 @@ The main class is `WebexBotManager`, which encapsulates the logic for creating a
 This module is based on the idea from: https://github.com/fbradyirl/webex_bot
 """
 
+import logging
 from webexteamssdk import WebexTeamsAPI
 from webex_bot.webex_bot import WebexBot
 from llm_agent.webex_chat.ai_command import AiCommand
@@ -13,6 +14,8 @@ from llm_agent.config.global_settings import (
     WEBEX_APPROVED_USERS_MAIL,
     WEBEX_TEAMS_ACCESS_TOKEN,
 )
+
+logging.getLogger().setLevel(logging.ERROR)
 
 
 def get_webex_room_id(webex_api: WebexTeamsAPI) -> str:
@@ -32,6 +35,7 @@ class WebexBotManager:
     """
 
     def __init__(self):
+
         self.bot = self._create_bot()
         self.webex_api = self._initialize_webex_api()
         self._add_commands()

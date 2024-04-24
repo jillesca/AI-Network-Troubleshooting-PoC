@@ -5,3 +5,4 @@ pyats[full]
 webex_bot
 uvicorn
 fastapi
+colorlog
