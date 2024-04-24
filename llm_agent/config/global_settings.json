@@ -3,5 +3,5 @@
   "llm_http_port": 5001,
   "logger_name": "llm_agent",
   "testbed_file": "llm_agent/config/pyats_testbed.yaml",
-  "logging_config_file": "llm_agent/logging_config/logging_settings.json"
+  "logging_config_file": "llm_agent/log_config/logger_settings.json"
 }

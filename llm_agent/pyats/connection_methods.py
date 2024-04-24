@@ -25,7 +25,7 @@ def api_connect(
       dict: A dictionary containing the result of the method execution or an exception if an error occurs.
     """
     logger.info("EXECUTING METHOD: %s, DEVICE: %s", method, device_name)
-    logger.info("ARGS: %s", args)
+    logger.debug("ARGS: %s", args)
     with PyATSConnection(device_name=device_name) as device_connection:
         method_to_call = getattr(device_connection.api, method)
         try:

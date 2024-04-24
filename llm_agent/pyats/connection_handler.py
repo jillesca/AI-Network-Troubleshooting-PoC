@@ -71,7 +71,7 @@ class PyATSConnection:
                 logger.error("PyATSConnection connection failed: %s", e)
 
     def _connect_to_device(self) -> None:
-        logger.info("ESTABLISHING CONNECTION to %s", self.device_name)
+        logger.debug("ESTABLISHING CONNECTION to %s", self.device_name)
         self.device_pyats.connect(
             mit=True,
             via="cli",
@@ -90,6 +90,6 @@ class PyATSConnection:
                 "PyATSConnection while exiting an error occurred: %s", exc_val
             )
         self.device_pyats.disconnect()
-        logger.info("CONNECTION CLOSED")
+        logger.debug("CONNECTION CLOSED")
 
         return False

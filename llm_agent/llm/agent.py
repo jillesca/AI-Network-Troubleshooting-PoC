@@ -11,8 +11,8 @@ from langchain.agents.format_scratchpad import (
 )
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.memory import ConversationBufferMemory
-from langchain.tools.render import format_tool_to_openai_function
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.utils.function_calling import convert_to_openai_function
 
 from unicon.core.errors import ConnectionError
 
@@ -22,8 +22,8 @@ from llm_agent.langchain_tools.lc_tools_list import tools
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage
 
-logging.getLogger().setLevel(logging.ERROR)
-
+# logging.getLogger().setLevel(logging.ERROR)
+logging.getLogger("httpx").setLevel(logging.ERROR)
 
 NOTIFICATION_PROMPT = """
 This is a network alert, not a user message.
@@ -53,7 +53,7 @@ class LLMChatAgent:
 
         llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
         llm_with_tools = llm.bind(
-            functions=[format_tool_to_openai_function(t) for t in tools]
+            functions=[convert_to_openai_function(t) for t in tools]
         )
 
         agent = (
