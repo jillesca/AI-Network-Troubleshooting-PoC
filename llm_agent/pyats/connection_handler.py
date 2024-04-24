@@ -47,6 +47,11 @@ class PyATSConnection:
         try:
             self.device_pyats = testbed.devices[self.device_name]
         except KeyError as exc:
+            logger.error(
+                "_load_devices_from_testbed error: device not found in testbed %s, error: %s",
+                self.device_name,
+                exc,
+            )
             devices_available = get_devices_from_inventory()
             raise KeyError(
                 f"Device {self.device_name} not found in testbed. Devices available are: {devices_available}"
@@ -63,10 +68,10 @@ class PyATSConnection:
                 self._connect_to_device()
                 break
             except ConnectionError as e:
-                logger.error("Connection failed: %s", e)
+                logger.error("PyATSConnection connection failed: %s", e)
 
     def _connect_to_device(self) -> None:
-        logger.info("ESTABLISHING CONNECTION")
+        logger.info("ESTABLISHING CONNECTION to %s", self.device_name)
         self.device_pyats.connect(
             mit=True,
             via="cli",
@@ -81,7 +86,9 @@ class PyATSConnection:
     def __exit__(self, exc_type, exc_val, exc_tb):
         logger.debug("CLOSING CONNECTION")
         if exc_type is not None:
-            logger.error("An error occurred: %s", exc_val)
+            logger.error(
+                "PyATSConnection while exiting an error occurred: %s", exc_val
+            )
         self.device_pyats.disconnect()
         logger.info("CONNECTION CLOSED")
 

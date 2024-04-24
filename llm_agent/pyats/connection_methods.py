@@ -38,6 +38,7 @@ def api_connect(
             else:
                 return method_to_call()
         except Exception as e:
+            logger.error("api_connect error executing method: %s", e)
             return {method.__name__: e}
 
 
@@ -59,4 +60,5 @@ def parse_connect(device_name: str, string_to_parse: str) -> any:
         try:
             return method(string_to_parse)
         except Exception as e:
+            logger.error("parse_connect error executing method: %s", e)
             return {method.__name__: e}
