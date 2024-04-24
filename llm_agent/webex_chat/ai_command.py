@@ -20,7 +20,7 @@ from webexteamssdk.models.cards import (
     FactSet,
 )
 
-from llm_agent.logging_config.logging_setup import logger
+from llm_agent.log_config.logger_setup import logger
 from llm_agent.webex_chat.chat_api_client import send_message_to_chat_api
 
 

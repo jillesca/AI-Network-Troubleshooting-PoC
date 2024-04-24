@@ -17,7 +17,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from unicon.core.errors import ConnectionError
 
 from llm_agent.llm.prompts import SYSTEM_PROMPT
-from llm_agent.logging_config.logging_setup import logger
+from llm_agent.log_config.logger_setup import logger
 from llm_agent.langchain_tools.lc_tools_list import tools
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage

@@ -9,7 +9,7 @@ from llm_agent.config.global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )
-from llm_agent.logging_config.logging_setup import logger
+from llm_agent.log_config.logger_setup import logger
 
 FASTAPI_REST_PATH = "chat"
 MAX_NUMBER_OF_TRIES_TO_CONNECT = 11

@@ -4,7 +4,7 @@ This module provides functions for connecting to devices using PyATSConnection A
 
 from typing import Optional, Union, Dict
 
-from llm_agent.logging_config.logging_setup import logger
+from llm_agent.log_config.logger_setup import logger
 from llm_agent.pyats.connection_handler import PyATSConnection
 
 
