@@ -21,8 +21,8 @@ from webexteamssdk.models.cards import (
     FactSet,
 )
 
-from llm_agent.webex_chat.chat_api_client import send_message_to_chat_api
 from llm_agent.config.global_settings import LOGGER_NAME
+from llm_agent.webex_chat.chat_api_client import send_message_to_chat_api
 
 logger = logging.getLogger(LOGGER_NAME)
 

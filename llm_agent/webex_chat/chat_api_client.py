@@ -2,6 +2,7 @@
 This module contains the function to send a message to the chat API.
 """
 
+import time
 import logging
 import requests
 
@@ -13,7 +14,7 @@ from llm_agent.config.global_settings import LOGGER_NAME
 
 
 FASTAPI_REST_PATH = "chat"
-MAX_NUMBER_OF_TRIES_TO_CONNECT = 10
+MAX_NUMBER_OF_TRIES_TO_CONNECT = 11
 
 logger = logging.getLogger(LOGGER_NAME)
 
@@ -30,20 +31,23 @@ def send_message_to_chat_api(message: str) -> str:
     """
     url = f"http://{HOST_URL}:{LLM_HTTP_PORT}/{FASTAPI_REST_PATH}"
     data = {"message": message}
-    for _ in range(MAX_NUMBER_OF_TRIES_TO_CONNECT):
+    for retries in range(MAX_NUMBER_OF_TRIES_TO_CONNECT):
+        logger.debug("Attempting to connect: %s", retries)
         try:
             response = requests.post(url, json=data, timeout=120)
             if response.status_code == 200:
                 return response.json()
             else:
                 logger.error(
-                    "Error from fastAPI for send_message_to_chat_api: http status code: %s, http response: %s, url: %s",
+                    "send_message_to_chat_api: Error connecting to fastAPI: http status code: %s, http response: %s, url: %s",
                     response.status_code,
                     response.text,
                     url,
                 )
         except requests.exceptions.RequestException as e:
-            logger.error(
-                "Error from fastAPI for send_message_to_chat_api: %s", e
-            )
-        return f"Ouch, I got a {response.status_code} from fastAPI, can't connect to the LLM."
+            logger.error("send_message_to_chat_api: Error from fastAPI: %s", e)
+        time.sleep(0.5)
+
+    return (
+        "Ouch, I got an error from fastAPI server, can't connect to the LLM."
+    )
