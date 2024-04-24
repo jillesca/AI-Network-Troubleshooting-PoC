@@ -12,8 +12,8 @@ import threading
 import uvicorn
 from fastapi import FastAPI
 
-from llm_agent.logging_config.main import setup_logging
-from llm_agent.config.load_global_settings import (
+from llm_agent.logging_config.logging_setup import setup_logging
+from llm_agent.config.global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )

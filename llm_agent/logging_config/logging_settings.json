@@ -21,13 +21,13 @@
       "class": "logging.handlers.RotatingFileHandler",
       "level": "DEBUG",
       "formatter": "detailed",
-      "filename": "llm_agent/logs/my_app.log",
+      "filename": "llm_agent/logs/llm_agent.log",
       "maxBytes": 10000000,
       "backupCount": 3
     }
   },
   "loggers": {
-    "root": {
+    "llm_agent": {
       "level": "INFO",
       "handlers": [
         "stderr",

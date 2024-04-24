@@ -9,7 +9,7 @@ This module is based on the idea from: https://github.com/fbradyirl/webex_bot
 from webexteamssdk import WebexTeamsAPI
 from webex_bot.webex_bot import WebexBot
 from llm_agent.webex_chat.ai_command import AiCommand
-from llm_agent.config.load_global_settings import (
+from llm_agent.config.global_settings import (
     WEBEX_APPROVED_USERS_MAIL,
     WEBEX_TEAMS_ACCESS_TOKEN,
 )
@@ -19,7 +19,7 @@ def get_webex_room_id(webex_api: WebexTeamsAPI) -> str:
     """
     Retrieve the ID of the first room that contains the specified username in its title.
 
-    TODO: This is a hacky way, only works with there is only one room with the boot
+    TODO: This is a hacky way, only works if there is only one room with the boot
     """
     all_rooms = webex_api.rooms.list()
     room_id = [room.id for room in all_rooms]

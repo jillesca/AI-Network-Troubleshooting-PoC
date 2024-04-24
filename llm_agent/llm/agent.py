@@ -2,6 +2,7 @@
 The LLMChatAgent class is responsible for handling the chat interactions with the LLM.
 """
 
+import logging
 from pydantic import ValidationError
 from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor
@@ -16,12 +17,12 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from unicon.core.errors import ConnectionError
 
 from llm_agent.llm.prompts import SYSTEM_PROMPT
+from llm_agent.config.global_settings import LOGGER_NAME
 from llm_agent.langchain_tools.lc_tools_list import tools
-from llm_agent.logging_config.main import setup_logging
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage
 
-logger = setup_logging()
+logger = logging.getLogger(LOGGER_NAME)
 
 
 NOTIFICATION_PROMPT = """
@@ -84,7 +85,7 @@ class LLMChatAgent:
         the agent will try to connect again to the device. This can go on forever.
         The agent stoppped at 3 attempts to connect to the device.
         """
-        logger.info(f"CHAT_SENT_TO_LLM: {message}")
+        logger.info("CHAT_SENT_TO_LLM: %s", message)
         try:
             return self._agent_executor(message)
         except (ValidationError, ConnectionError, KeyError) as e:
@@ -98,11 +99,20 @@ class LLMChatAgent:
                 logger.error(msg)
                 return self.chat(msg, attempts + 1)
             else:
-                logger.error(f"Uncatched error: {e}")
+                logger.error("Uncatched error: %s", e)
                 return f"ERROR: {e}"
 
     def notification(self, message: GrafanaWebhookMessage) -> str:
-        # logger.info(f"NOTIFICATION_SENT_TO_LLM: {message}")
+        """
+        Sends a notification to the LLM agent.
+
+        Args:
+          message (GrafanaWebhookMessage): The message containing the notification details.
+
+        Returns:
+          str: The response from the LLM agent.
+
+        """
         notification = {
             "system_instructions": remove_white_spaces(
                 string=NOTIFICATION_PROMPT

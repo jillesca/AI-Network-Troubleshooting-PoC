@@ -4,7 +4,7 @@ Script to retrieve the devices from the inventory using the pyATS framework.
 
 from pyats.topology import loader
 
-from llm_agent.config.load_global_settings import TESTBED_FILE
+from llm_agent.config.global_settings import TESTBED_FILE
 
 
 def get_devices_from_inventory() -> list:

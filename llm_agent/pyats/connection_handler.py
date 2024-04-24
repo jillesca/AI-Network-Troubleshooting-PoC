@@ -9,11 +9,11 @@ from typing import Optional
 
 from pyats.topology import loader, Device
 
-from llm_agent.logging_config.main import setup_logging
-from llm_agent.config.load_global_settings import TESTBED_FILE
 from llm_agent.pyats.inventory import get_devices_from_inventory
+from llm_agent.config.global_settings import LOGGER_NAME, TESTBED_FILE
 
-logger = setup_logging()
+logger = logging.getLogger(LOGGER_NAME)
+
 NUMBER_OF_TRIES_TO_CONNECT = 10
 
 
@@ -53,6 +53,7 @@ class PyATSConnection:
             ) from exc
 
     def _set_device_settings(self) -> None:
+        # So the connection close faster
         self.device_pyats.settings.GRACEFUL_DISCONNECT_WAIT_SEC = 0
         self.device_pyats.settings.POST_DISCONNECT_WAIT_SEC = 0
 
