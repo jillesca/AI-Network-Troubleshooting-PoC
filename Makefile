@@ -4,21 +4,24 @@ export
 
 .PHONY: all build run logs cli
 
-all:	build-all
+all:	tig-build llm-build
 
-build-all:
-		$(MAKE) clean
-		docker-compose up --build --detach
+tig-build:
+		$(MAKE) clean-tig
+		docker-compose up --build --detach telegraf influxdb grafana
 
-build-%:
-		-docker-compose rm -f $*
-		docker-compose up --build --detach $*
+llm-build:
+		$(MAKE) clean-llm
+		docker-compose up --build --detach llm_agent
 
-logs-%:
-		docker-compose logs -f $*
+follow:
+		docker-compose logs --follow llm_agent
 
-cli-%:
-		docker-compose exec $* bash
+cli:
+		docker-compose exec llm_agent bash
 
-clean:
-		-docker-compose down
+clean-tig:
+		-docker-compose down telegraf influxdb grafana
+
+clean-llm:
+		-docker-compose down llm_agent

@@ -31,7 +31,8 @@ This is a network alert, not a user message.
 
 MEMORY_KEY = "chat_history"
 
-LLM_MODEL = "gpt-4-turbo-preview"
+# LLM_MODEL = "gpt-4-turbo-preview"
+LLM_MODEL = "gpt-3.5-turbo"
 
 
 class LLMChatAgent:
