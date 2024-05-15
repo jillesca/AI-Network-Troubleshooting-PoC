@@ -1,9 +1,8 @@
-version: "3.8"
 services:
   llm_agent:
     build:
-      context: ./llm_agent
-      target: app
+      context: ./
+      dockerfile: llm_agent.Dockerfile
       args:
         OPENAI_API_KEY: ${OPENAI_API_KEY}
         GRAFANA_WEB_HOOK: ${GRAFANA_WEB_HOOK}
@@ -12,7 +11,6 @@ services:
         WEBEX_ROOM_ID: ${WEBEX_ROOM_ID}
         WEBEX_TEAMS_ACCESS_TOKEN: ${WEBEX_TEAMS_ACCESS_TOKEN}
         WEBEX_APPROVED_USERS_MAIL: ${WEBEX_APPROVED_USERS_MAIL}
-    image: python:3.12.2
     container_name: llm_agent
     ports:
       - "5001:5001"
@@ -27,7 +25,6 @@ services:
         GRAFANA_VERSION: ${GRAFANA_VERSION}
         GRAFANA_WEB_HOOK: ${GRAFANA_WEB_HOOK}
         WEBEX_TEAMS_ACCESS_TOKEN: ${WEBEX_TEAMS_ACCESS_TOKEN}
-    image: grafana:${GRAFANA_VERSION}
     container_name: grafana
     ports:
       - "3000:3000"
@@ -43,7 +40,6 @@ services:
         DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
         DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BUCKET}
         DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
-    image: influxdb:${INFLUXDB_VERSION}
     container_name: influxdb
     ports:
       - "8086:8086"
@@ -58,7 +54,6 @@ services:
         TELEGRAF_ORG: ${TELEGRAF_ORG}
         TELEGRAF_TOKEN: ${TELEGRAF_TOKEN}
         TELEGRAF_BUCKET: ${TELEGRAF_BUCKET}
-    image: telegraf:${TELEGRAF_VERSION}
     container_name: telegraf
     ports:
       - "57500:57500"
