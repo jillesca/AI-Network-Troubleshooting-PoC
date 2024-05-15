@@ -22,12 +22,12 @@
   "handlers": {
     "stdout": {
       "class": "colorlog.StreamHandler",
-      "level": "ERROR",
+      "level": "INFO",
       "formatter": "colored"
     },
     "stderr": {
       "class": "colorlog.StreamHandler",
-      "level": "ERROR",
+      "level": "INFO",
       "formatter": "colored"
     },
     "file": {
@@ -41,12 +41,13 @@
   },
   "loggers": {
     "llm_agent": {
-      "level": "ERROR",
+      "level": "INFO",
       "handlers": [
+        "stdout",
         "stderr",
         "file"
       ],
-      "propagate": false
+      "propagate": true
     }
   }
 }

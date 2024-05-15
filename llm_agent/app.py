@@ -16,11 +16,14 @@ from llm_agent.config.global_settings import (
     HOST_URL,
     LLM_HTTP_PORT,
 )
+
 from llm_agent.llm.agent import LLMChatAgent
 from llm_agent.webex_chat.bot import WebexBotManager
 from llm_agent.log_config.logger_setup import logger
 from llm_agent.fastAPI.models import Message, GrafanaWebhookMessage
 
+
+logger.info("Starting the FastAPI application.")
 
 app = FastAPI()
 chat_agent = LLMChatAgent()

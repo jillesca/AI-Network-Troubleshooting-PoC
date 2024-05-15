@@ -39,7 +39,6 @@ global_config = load_json_file(json_file=GLOBAL_SETTINGS_FILE)
 
 HOST_URL = global_config.get("host_url")
 LLM_HTTP_PORT = global_config.get("llm_http_port")
-LOGGER_NAME = global_config.get("logger_name")
 TESTBED_FILE = global_config.get("testbed_file")
 LOGGING_CONFIG_FILE = global_config.get("logging_config_file")
 

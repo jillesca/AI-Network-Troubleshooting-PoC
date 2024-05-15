@@ -22,8 +22,8 @@ from llm_agent.langchain_tools.lc_tools_list import tools
 from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage
 
-# logging.getLogger().setLevel(logging.ERROR)
-logging.getLogger("httpx").setLevel(logging.ERROR)
+httpx_logger = logging.getLogger("httpx")
+httpx_logger.setLevel(logging.ERROR)
 
 NOTIFICATION_PROMPT = """
 This is a network alert, not a user message.

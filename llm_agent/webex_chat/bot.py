@@ -15,12 +15,11 @@ from llm_agent.config.global_settings import (
     WEBEX_TEAMS_ACCESS_TOKEN,
 )
 
-logger = logging.getLogger()
-logger.setLevel(logging.ERROR)
+webexteamssdk_logger = logging.getLogger("webexteamssdk")
+webexteamssdk_logger.setLevel(logging.CRITICAL)
 
-logging.getLogger("webex_bot.websockets.webex_websocket_client").setLevel(
-    logging.ERROR
-)
+webex_bot_logger = logging.getLogger("webex_bot")
+webex_bot_logger.setLevel(logging.CRITICAL)
 
 
 def get_webex_room_id(webex_api: WebexTeamsAPI) -> str:

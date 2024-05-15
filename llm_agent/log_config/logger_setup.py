@@ -11,7 +11,6 @@ import pathlib
 import logging.config
 from llm_agent.utils.text_utils import load_json_file
 from llm_agent.config.global_settings import (
-    LOGGER_NAME,
     LOGGING_CONFIG_FILE,
 )
 
@@ -35,7 +34,7 @@ def setup_logging():
 
     logging.config.dictConfig(config)
 
-    return logging.getLogger(LOGGER_NAME)
+    return logging.getLogger()
 
 
 def _ensure_log_file_exists(filename):
@@ -68,6 +67,7 @@ def _get_log_file_name(config):
 
 
 logger = setup_logging()
+logger.debug("Setting up logging using %s", LOGGING_CONFIG_FILE)
 
 
 def main():
