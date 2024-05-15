@@ -22,7 +22,7 @@
   "handlers": {
     "stderr": {
       "class": "colorlog.StreamHandler",
-      "level": "DEBUG",
+      "level": "INFO",
       "formatter": "colored"
     },
     "file": {

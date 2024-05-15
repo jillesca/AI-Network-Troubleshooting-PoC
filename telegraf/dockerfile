@@ -13,7 +13,7 @@ RUN apt update \
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY telegraf/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
 RUN python3 -m pip install --upgrade pip \
     && pip install -r /tmp/requirements.txt \
@@ -32,7 +32,7 @@ ENV TELEGRAF_ORG=${TELEGRAF_ORG} \
     TELEGRAF_TOKEN=${TELEGRAF_TOKEN} \
     TELEGRAF_BUCKET=${TELEGRAF_BUCKET}
 
-COPY telegraf/config/ /tmp/config/
+COPY config/ /tmp/config/
 
 RUN mv /tmp/config/telegraf.conf /etc/telegraf/telegraf.conf \
     && mv /tmp/config/netconf.conf /etc/telegraf/telegraf.d/netconf.conf \

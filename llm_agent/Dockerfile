@@ -1,6 +1,6 @@
 FROM python:3.12.2 as base
 
-COPY llm_agent/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install --upgrade pip && \
     pip install -r /tmp/requirements.txt
@@ -25,4 +25,6 @@ ENV OPENAI_API_KEY=${OPENAI_API_KEY} \
     WEBEX_TEAMS_ACCESS_TOKEN=${WEBEX_TEAMS_ACCESS_TOKEN} \
     WEBEX_APPROVED_USERS_MAIL=${WEBEX_APPROVED_USERS_MAIL}
 
-COPY llm_agent /app
+COPY . /llm_agent
+
+ENTRYPOINT [ "python", "/llm_agent/app.py" ]

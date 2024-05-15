@@ -2,8 +2,8 @@ version: "3.8"
 services:
   llm_agent:
     build:
-      context: .
-      dockerfile: llm_agent/dockerfile
+      context: ./llm_agent
+      target: app
       args:
         OPENAI_API_KEY: ${OPENAI_API_KEY}
         GRAFANA_WEB_HOOK: ${GRAFANA_WEB_HOOK}
@@ -19,8 +19,7 @@ services:
 
   grafana:
     build:
-      context: .
-      dockerfile: grafana/dockerfile
+      context: ./grafana
       args:
         LLM_HTTP_PORT: ${LLM_HTTP_PORT}
         GRAFANA_TOKEN: ${GRAFANA_TOKEN}
@@ -35,8 +34,7 @@ services:
 
   influxdb:
     build:
-      context: .
-      dockerfile: influxdb/dockerfile
+      context: ./influxdb
       args:
         INFLUXDB_VERSION: ${INFLUXDB_VERSION}
         DOCKER_INFLUXDB_INIT_MODE: ${INFLUXDB_MODE}
@@ -54,8 +52,7 @@ services:
 
   telegraf:
     build:
-      context: .
-      dockerfile: telegraf/dockerfile
+      context: ./telegraf
       args:
         TELEGRAF_VERSION: ${TELEGRAF_VERSION}
         TELEGRAF_ORG: ${TELEGRAF_ORG}

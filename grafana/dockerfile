@@ -15,7 +15,7 @@ ENV GRAFANA_TOKEN=${GRAFANA_TOKEN} \
     GRAFANA_WEB_HOOK=${GRAFANA_WEB_HOOK} \
     WEBEX_TEAMS_ACCESS_TOKEN=${WEBEX_TEAMS_ACCESS_TOKEN} 
 
-COPY grafana/config/ /tmp/config/
+COPY config/ /tmp/config/
 
 USER root
 

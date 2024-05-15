@@ -7,7 +7,7 @@ export
 all:	build-all
 
 build-all:
-		$(MAKE) clean-all
+		$(MAKE) clean
 		docker-compose up --build --detach
 
 build-%:
