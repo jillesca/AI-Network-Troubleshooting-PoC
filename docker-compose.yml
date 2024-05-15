@@ -1,5 +1,22 @@
 version: "3.8"
 services:
+  llm_agent:
+    build:
+      context: .
+      dockerfile: llm_agent/dockerfile
+      args:
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        GRAFANA_WEB_HOOK: ${GRAFANA_WEB_HOOK}
+        LANGCHAIN_API_KEY: ${LANGCHAIN_API_KEY}
+        LANGCHAIN_PROJECT: ${LANGCHAIN_PROJECT}
+        WEBEX_ROOM_ID: ${WEBEX_ROOM_ID}
+        WEBEX_TEAMS_ACCESS_TOKEN: ${WEBEX_TEAMS_ACCESS_TOKEN}
+        WEBEX_APPROVED_USERS_MAIL: ${WEBEX_APPROVED_USERS_MAIL}
+    image: python:3.12.2
+    container_name: llm_agent
+    ports:
+      - "5001:5001"
+
   grafana:
     build:
       context: .
