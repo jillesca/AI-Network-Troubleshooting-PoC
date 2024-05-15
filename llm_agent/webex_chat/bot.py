@@ -19,7 +19,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
 
 logging.getLogger("webex_bot.websockets.webex_websocket_client").setLevel(
-    logging.INFO
+    logging.ERROR
 )
 
 

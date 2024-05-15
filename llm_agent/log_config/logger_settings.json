@@ -27,12 +27,12 @@
     },
     "stderr": {
       "class": "colorlog.StreamHandler",
-      "level": "INFO",
+      "level": "ERROR",
       "formatter": "colored"
     },
     "file": {
       "class": "logging.handlers.RotatingFileHandler",
-      "level": "DEBUG",
+      "level": "ERROR",
       "formatter": "detailed",
       "filename": "llm_agent/logs/llm_agent.log",
       "maxBytes": 10000000,

@@ -27,4 +27,5 @@ ENV OPENAI_API_KEY=${OPENAI_API_KEY} \
 
 COPY . /llm_agent
 
-ENTRYPOINT [ "python", "/llm_agent/app.py" ]
+# ENTRYPOINT [ "python","-u", "/llm_agent/app.py" ]
+ENTRYPOINT ["sh", "-c", "while :; do sleep 1; done"]

@@ -10,9 +10,13 @@ tig-build:
 		$(MAKE) clean-tig
 		docker-compose up --build --detach telegraf influxdb grafana
 
+tig-run:
+		$(MAKE) clean-tig
+		docker-compose up --detach telegraf influxdb grafana
+
 llm-build:
 		$(MAKE) clean-llm
-		docker-compose up --build --detach llm_agent
+		docker-compose up --build --always-recreate-deps --detach llm_agent
 
 follow:
 		docker-compose logs --follow llm_agent
