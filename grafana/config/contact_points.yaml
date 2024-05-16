@@ -17,7 +17,7 @@ contactPoints:
           httpMethod: POST
           message: Network issue detected
           title: Automatic Network Alert
-          url: http://host.docker.internal:$LLM_HTTP_PORT/alert
+          url: http://llm_agent:$LLM_HTTP_PORT/alert
         disableResolveMessage: false
       - uid: f727420e-064c-49c1-aff8-cc8831f85a88
         type: webex

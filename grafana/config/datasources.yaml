@@ -4,7 +4,7 @@ datasources:
   - name: InfluxDB_v2_Flux
     type: influxdb
     access: proxy
-    url: http://host.docker.internal:8086
+    url: http://influxdb:8086
     jsonData:
       version: Flux
       organization: telemtry-org
