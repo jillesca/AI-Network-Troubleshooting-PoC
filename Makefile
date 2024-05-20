@@ -2,10 +2,6 @@ include .env.local
 include .env
 export
 
-.PHONY: all build run logs cli
-
-all:	build-tig build-llm
-
 build-tig:
 		$(MAKE) clean-tig
 		docker compose up --build --detach telegraf influxdb grafana
