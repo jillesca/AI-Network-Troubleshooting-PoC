@@ -90,12 +90,16 @@ Then, import the [topology file](cml/topology.yaml) used for this demo and start
 
 The TIG stack requires Docker and IP reachability to the CML instance. For this demo, I used my laptop.
 
-To start the TIG stack do.
+The first time you need to build the TIG stack.
 
 ```bash
-./build_run_telegraf.sh
-./build_run_influxdb.sh
-./build_run_grafana.sh
+make build-tig
+```
+
+Subsequent runs of the TIG stack you can just run the containers.
+
+```bash
+make run-tig
 ```
 
 ### 🚦 Verifying Telemetry on Telegraf, Influxdb, Grafana
@@ -103,20 +107,22 @@ To start the TIG stack do.
 - telegraf
   - Run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
 - Influxdb
-  - Access <http://localhost:8086> with the credentials admin/admin123
+  - Access <http://10.10.20.50:8086> with the credentials admin/admin123
 - Grafana
-  - Access <http://localhost:3000/dashboards> with the credentials admin/admin
+  - Access <http://10.10.20.50:3000/dashboards> with the credentials admin/admin
   - Navigrate to `General > Network Telemetry` to see the grafana dashboard.
 
 ### 🏁 Starting the LLM
+
+```bash
+make run-llm
+```
 
 The [llm_agent directory](llm_agent/) provides all the code used to run the LLM.
 
 In this demo, the LLM is run using a Python virtual environment. Ensure that you install the [requirementes listed.](llm_agent/requirements.txt)
 
 The entry point for the application is the [app file](llm_agent/app.py)
-
-> _**NOTE:** In the upcoming weeks, a container will be added for the LLM_
 
 ## 🎮 Running the Demo
 
