@@ -9,7 +9,7 @@ The components used by this demo are:
 - Virtual IOS-XE devices running ISIS.
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
 - [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
-- TIG stack with docker 20.10+ 🐳
+- TIG stack with docker `20.10+` 🐳
   - Telegraf grabs telmetry data from network devices.
   - Grafana kicks a webhook when an alarm is detected. 🚨
 - FastAPI.
@@ -24,7 +24,11 @@ The components used by this demo are:
 
 For this demo [one alarm was created.](grafana/alerts.yaml)
 
-When the average number of ISIS neighbors in a lapse of 30 second _**is less than**_ the average number of ISIS neighbors in a lapse of 30 minutes, the alarm will trigger a webhook for the LLM.
+```bash
+if avgNeighbors(30sec) < avgNeighbors(30min) : send Alarm​
+```
+
+> When the average number of ISIS neighbors in a lapse of 30 second _**is less than**_ the average number of ISIS neighbors in a lapse of 30 minutes, the alarm will trigger a webhook for the LLM.
 
 This signal that a stable ISIS neighbor that was working on the last 30 minutes was lost, and allows to work with `N` number of ISIS neighbors.
 
@@ -32,9 +36,12 @@ This signal that a stable ISIS neighbor that was working on the last 30 minutes 
 
 ### 🔑 Environment variables
 
+Environment variables are injected through the use of [the Makefile on root of the project.](Makefile)
+
 #### 📌 Mandatory variables
 
-For the demo to work, you **must** set the next environment variables. You can either `export` the environment variables or create a `.env` file with them. See [.env.local](.env.local) for an example.
+> [!IMPORTANT]  
+> For the demo to work, you **must** set the next environment variables.
 
 ```bash
 OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
@@ -44,7 +51,8 @@ WEBEX_USERNAME=<YOUR_WEBEX_USERNAME>
 WEBEX_ROOM_ID=<THE_WEBEX_ROOM_ID>
 ```
 
-> _**NOTE:**_ The webex variables are only needed if you interact with the LLM using webex.
+> [!NOTE]
+> The webex variables are only needed if you interact with the LLM using webex. However you need to modify the python accordingly.
 
 If you prefer to use another client, you need to:
 
@@ -88,9 +96,9 @@ Then, import the [topology file](cml/topology.yaml) used for this demo and start
 
 ### 📦 TIG Stack
 
-The TIG stack requires Docker and IP reachability to the CML instance. For this demo, I used my laptop.
+The TIG stack requires Docker and IP reachability to the CML instance. For this demo, I used the sandbox VM `10.10.20.50`.
 
-The first time you need to build the TIG stack.
+The first time, you need to build the TIG stack.
 
 ```bash
 make build-tig
@@ -104,25 +112,23 @@ make run-tig
 
 ### 🚦 Verifying Telemetry on Telegraf, Influxdb, Grafana
 
-- telegraf
-  - Run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
+- Telegraf
+  - On 10.10.20.50 run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
 - Influxdb
-  - Access <http://10.10.20.50:8086> with the credentials admin/admin123
+  - Access <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
 - Grafana
-  - Access <http://10.10.20.50:3000/dashboards> with the credentials admin/admin
+  - Access <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
   - Navigrate to `General > Network Telemetry` to see the grafana dashboard.
 
 ### 🏁 Starting the LLM
 
+The [llm_agent directory](llm_agent/) provides all the code used to run the LLM. The entry point for the application is the [app file](llm_agent/app.py)
+
+In this demo, the a container runs the application on the sandbox VM `10.10.20.50`.
+
 ```bash
 make run-llm
 ```
-
-The [llm_agent directory](llm_agent/) provides all the code used to run the LLM.
-
-In this demo, the LLM is run using a Python virtual environment. Ensure that you install the [requirementes listed.](llm_agent/requirements.txt)
-
-The entry point for the application is the [app file](llm_agent/app.py)
 
 ## 🎮 Running the Demo
 
@@ -159,10 +165,10 @@ Next, you will receive a webex notification from grafana and the LLM will receiv
 
 If the CML lab is not reachable from your laptop, it's usually due to a connectivity issue between the devices and the CML bridge. Here are some steps to resolve this:
 
-- Try flapping the management interface (G1) of the devices several times.
-- Ping from the devices to their Gateway (10.10.20.255).
-- Go to the DevBox 10.10.20.50 (credentials: developer/C1sco12345) and ping the management interface of the devices.
+- Try flapping the management interface (`G1`) of the devices several times.
+- Ping from the devices to their Gateway (`10.10.20.255`).
+- Go to the DevBox `10.10.20.50` (credentials: `developer`/`C1sco12345`) and ping the management interface of the devices.
 
 Connectivity usually starts to work after about 5 minutes.
 
-In more drastic cases, restart the cat8kv from the CML GUI.
+In more drastic cases, restart the `cat8kv` from the CML GUI.
