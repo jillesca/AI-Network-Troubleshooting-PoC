@@ -22,7 +22,7 @@ The components used by this demo are:
 
 ## 🎬 Demo
 
-For this demo [one alarm was created.](grafana/alerts.yaml)
+For this demo [one alarm was created.](grafana/config/alerts.yaml)
 
 ```bash
 if avgNeighbors(30sec) < avgNeighbors(30min) : send Alarm​
