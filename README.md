@@ -11,7 +11,7 @@ The components used by this demo are:
   - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
 - [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
 - TIG stack with docker `20.10+` 🐳
-  - Telegraf grabs telmetry data from network devices.
+  - Telegraf grabs telemetry data from network devices.
   - Grafana kicks a webhook when an alarm is detected. 🚨
 - FastAPI.
   - Host the LLM.
