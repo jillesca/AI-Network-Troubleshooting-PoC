@@ -7,10 +7,8 @@ This demo is built to showcase how you AI might assist you in troubleshooting ne
 The components used by this demo are:
 
 - Virtual IOS-XE devices running ISIS.
-
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
   - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
-
 - [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
 - TIG stack with docker `20.10+` 🐳
   - Telegraf grabs telmetry data from network devices.
