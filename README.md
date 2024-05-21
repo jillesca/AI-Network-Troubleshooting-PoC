@@ -99,7 +99,7 @@ Then, import the [topology file](cml/topology.yaml) used for this demo and start
 
 The TIG stack requires Docker and IP reachability to the CML instance. For this demo, I used the sandbox VM `10.10.20.50`.
 
-The first time, you need to build the TIG stack.
+First time, build the TIG stack.
 
 ```bash
 make build-tig
@@ -113,19 +113,24 @@ make run-tig
 
 ### 🚦 Verifying Telemetry on Telegraf, Influxdb, Grafana
 
-- Telegraf
-  - On 10.10.20.50 run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
-- Influxdb
-  - Access <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
-- Grafana
-  - Access <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
-  - Navigate to `General > Network Telemetry` to see the grafana dashboard.
+**Telegraf**
+
+- On 10.10.20.50 run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
+
+**Influxdb**
+
+- Access <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
+
+**Grafana**
+
+- Access <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
+- Navigate to `General > Network Telemetry` to see the grafana dashboard.
 
 ### 🏁 Starting the LLM
 
-The [llm_agent directory](llm_agent/) provides all the code used to run the LLM. The entry point for the application is the [app file](llm_agent/app.py)
+The [llm_agent directory](llm_agent/) provides the entry point for the application, the [app file](llm_agent/app.py)
 
-In this demo, the a container runs the application on the sandbox VM `10.10.20.50`.
+The llm container runs on the sandbox VM `10.10.20.50`.
 
 ```bash
 make run-llm
@@ -133,16 +138,16 @@ make run-llm
 
 ## 🎮 Running the Demo
 
-What the [recorded demo here,](https://app.vidcast.io/share/1bb750ef-76ef-4fa5-9f2f-442a82151463) 5m18s duration.
-
-> [!NOTE]
-> The recoding was done as a backup demo. It doesn't have audio or instructions.
-
 ![network topology](/img/cml.png)
 
 The demo involves shutting down one interface, causing an ISIS failure, and allowing the LLM to diagnose the issue and implement a fix.
 
 In the images below, `GigabitEthernet5` was shutting down on `cat8000-v0` resulting in losing its ISIS adjacency with `cat8000-v2`
+
+You can watch the [recorded demo here](https://app.vidcast.io/share/1bb750ef-76ef-4fa5-9f2f-442a82151463)
+
+> [!NOTE]
+> The recoding was done as a backup demo. It doesn't have audio or instructions.
 
 On Grafana, you can observe the ISIS count decreasing and triggering an alarm.
 
