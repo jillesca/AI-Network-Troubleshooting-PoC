@@ -7,7 +7,10 @@ This demo is built to showcase how you AI might assist you in troubleshooting ne
 The components used by this demo are:
 
 - Virtual IOS-XE devices running ISIS.
+
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
+  - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
+
 - [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
 - TIG stack with docker `20.10+` 🐳
   - Telegraf grabs telmetry data from network devices.
@@ -154,26 +157,13 @@ Next, you will receive a webex notification from grafana and the LLM will receiv
 ![llm thinking 2](img/webex_bot2.png)
 ![llm thinking 3](img/webex_bot3.png)
 ![llm thinking 4](img/webex_bot4.png)
-![llm thinking 5](img/webex_bot5.png)
-![llm thinking 6](img/webex_bot6.png)
 
 ## 📝 Notes
 
-- You can easily run out of OpenAI tokens in your replies from netconf, so is important to filter data to what AI could need.
+- AI tokens can run out easily with netconf, so is important to filter what is sent to the AI.
 - Repeated alarms are suppresed by Grafana, this is controlled by [the grafana policy file,](grafana/config/policies.yaml)
-  - If you are testing continously, run `./build_run_grafana.sh` to destroy and create the container.
+  - If you are testing continously, run `make run-tig` to destroy and create the TIG containers.
   - This isn't an ideal scenario, but a proper solution wasn't found within the given time.
 - From time to time, the answers from the LLM are lost and not sent to webex. You can find them on the terminal output.
-- This is the second iteration of this exercise. The first one was [presented at Cisco Impact 2023](https://github.com/jillesca/open_telemetry_network_impact)
-
-## 📚 Troubleshooting
-
-If the CML lab is not reachable from your laptop, it's usually due to a connectivity issue between the devices and the CML bridge. Here are some steps to resolve this:
-
-- Try flapping the management interface (`G1`) of the devices several times.
-- Ping from the devices to their Gateway (`10.10.20.255`).
-- Go to the DevBox `10.10.20.50` (credentials: `developer`/`C1sco12345`) and ping the management interface of the devices.
-
-Connectivity usually starts to work after about 5 minutes.
-
-In more drastic cases, restart the `cat8kv` from the CML GUI.
+- This is the third iteration of this exercise. The first one was [Cisco Live Amsterdam 2024](https://github.com/jillesca/CLEUR-DEVNET-3707)
+  - The main differences are the use of makefile, docker compose and the refactoring of the llm agent code for a better separation of concerns.
