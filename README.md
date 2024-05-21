@@ -11,11 +11,11 @@ The components used by this demo are:
   - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
 - [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
 - TIG stack with docker `20.10+` 🐳
-  - Telegraf grabs telemetry data from network devices.
+  - Telegraf uses `ncpeek` to pull telemetry data from network devices.
   - Grafana kicks a webhook when an alarm is detected. 🚨
 - FastAPI.
   - Host the LLM.
-  - Interacts with network devices & frontend.
+  - Interacts with PyATS & Webex.
 - PyATS. Provides a framework to interact with network devices. 🛠️
 - [Webex_bot](https://github.com/fbradyirl/webex_bot) use to interact with the LLM. 🤖
 - OpenAI LLM. 🧠
@@ -115,15 +115,16 @@ make run-tig
 
 **Telegraf**
 
-- On 10.10.20.50 run `docker exec -it telegraf bash` and then [tail -F /tmp/telegraf-grpc.log](telegraf/dockerfile#L30) to see Telegraf logs.
+- Logs: On 10.10.20.50 use `docker exec -it telegraf bash` then `tail -F /tmp/telegraf-grpc.log`.
+  - [See config defined here](telegraf/dockerfile#L30)
 
 **Influxdb**
 
-- Access <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
+- <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
 
 **Grafana**
 
-- Access <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
+- <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
 - Navigate to `General > Network Telemetry` to see the grafana dashboard.
 
 ### 🏁 Starting the LLM
@@ -140,7 +141,7 @@ make run-llm
 
 ![network topology](/img/cml.png)
 
-The demo involves shutting down one interface, causing an ISIS failure, and allowing the LLM to diagnose the issue and implement a fix.
+The demo involves shutting down one interface, causing an `ISIS` failure, and allowing the LLM to diagnose the issue and implement a fix.
 
 In the images below, `GigabitEthernet5` was shutting down on `cat8000-v0` resulting in losing its ISIS adjacency with `cat8000-v2`
 
@@ -163,7 +164,7 @@ Next, you will receive a webex notification from grafana and the LLM will receiv
 
 ## 📝 Notes
 
-- AI tokens can run out easily with netconf, so is important to filter what is sent to the AI.
+- Tokens can run out easily with netconf, highly important to filter what is sent to the AI.
 - Repeated alarms are suppresed by Grafana, this is controlled by [the grafana policy file,](grafana/config/policies.yaml)
   - If you are testing continously, run `make run-tig` to destroy and create the TIG containers.
   - This isn't an ideal scenario, but a proper solution wasn't found within the given time.
