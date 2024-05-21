@@ -70,7 +70,7 @@ To get the `WEBEX_ROOM_ID` the easiest way is to open a room with your bot in th
 
 For testing, you can use the `GRAFANA_WEB_HOOK` env var to send webhooks to other site, such as <https://webhook.site/>
 
-If you have access to smith.langchain.com (recommended for view LLM operations) add your project ID and API key.
+If you have access to [smith.langchain.com](https://smith.langchain.com/) (recommended for view LLM operations) add your project ID and API key.
 
 ```bash
 GRAFANA_WEB_HOOK=<WEB_HOOK_URL>
@@ -104,7 +104,7 @@ The first time, you need to build the TIG stack.
 make build-tig
 ```
 
-Subsequent runs of the TIG stack you can just run the containers.
+Subsequent runs of the TIG stack you can run the containers.
 
 ```bash
 make run-tig
@@ -118,7 +118,7 @@ make run-tig
   - Access <http://10.10.20.50:8086> with the credentials `admin`/`admin123`
 - Grafana
   - Access <http://10.10.20.50:3000/dashboards> with the credentials `admin`/`admin`
-  - Navigrate to `General > Network Telemetry` to see the grafana dashboard.
+  - Navigate to `General > Network Telemetry` to see the grafana dashboard.
 
 ### 🏁 Starting the LLM
 
@@ -131,6 +131,11 @@ make run-llm
 ```
 
 ## 🎮 Running the Demo
+
+What the recorded demo (5m18s) here: <https://app.vidcast.io/share/1bb750ef-76ef-4fa5-9f2f-442a82151463>
+
+> [!NOTE]
+> The recoding was done as a backup demo. It doesn't have audio or instructions.
 
 ![network topology](/img/cml.png)
 
