@@ -132,7 +132,7 @@ make run-llm
 
 ## 🎮 Running the Demo
 
-What the recorded demo (5m18s) here: <https://app.vidcast.io/share/1bb750ef-76ef-4fa5-9f2f-442a82151463>
+What the [recorded demo here,](https://app.vidcast.io/share/1bb750ef-76ef-4fa5-9f2f-442a82151463) 5m18s duration.
 
 > [!NOTE]
 > The recoding was done as a backup demo. It doesn't have audio or instructions.
