@@ -6,15 +6,14 @@ import logging
 from pydantic import ValidationError
 from langchain_openai import ChatOpenAI
 from langchain_community.chat_models import ChatOllama
-from langchain.agents import AgentExecutor
-from langchain.agents.format_scratchpad import (
-    format_to_openai_function_messages,
+from langchain.agents import (
+    AgentExecutor,
+    create_tool_calling_agent,
 )
-from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
+from langchain.agents.output_parsers import JSONAgentOutputParser
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.utils.function_calling import convert_to_openai_function
-
+from langchain_mistralai.chat_models import ChatMistralAI
 from unicon.core.errors import ConnectionError
 
 from llm_agent.llm.prompts import SYSTEM_PROMPT
@@ -32,7 +31,7 @@ This is a network alert, not a user message.
 
 MEMORY_KEY = "chat_history"
 
-LLM_MODEL = "mistral"
+LLM_MODEL = "mistral-large-latest"
 # LLM_MODEL = "gpt-4-turbo-preview"
 # LLM_MODEL = "gpt-3.5-turbo"
 
@@ -54,30 +53,23 @@ class LLMChatAgent:
             ]
         )
 
-        # llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
-        llm = ChatOllama(model=LLM_MODEL)
-        llm_with_tools = llm.bind(
-            functions=[convert_to_openai_function(t) for t in tools]
-        )
+        llm = ChatMistralAI(model=LLM_MODEL)
 
-        agent = (
-            {
-                "input": lambda x: x["input"],
-                "agent_scratchpad": lambda x: format_to_openai_function_messages(
-                    x["intermediate_steps"]
-                ),
-                "chat_history": lambda x: x["chat_history"],
-            }
-            | prompt
-            | llm_with_tools
-            | OpenAIFunctionsAgentOutputParser()
+        agent = create_tool_calling_agent(
+            llm=llm,
+            tools=tools,
+            prompt=prompt,
         )
 
         memory = ConversationBufferMemory(
             memory_key="chat_history", return_messages=True
         )
         self.agent_executor = AgentExecutor(
-            agent=agent, tools=tools, verbose=True, memory=memory
+            agent=agent,
+            tools=tools,
+            verbose=True,
+            memory=memory,
+            handle_parsing_errors=True,
         )
 
     def _agent_executor(self, message: str) -> str:
@@ -129,17 +121,21 @@ class LLMChatAgent:
 
 if __name__ == "__main__":
     agent = LLMChatAgent()
-    chat = agent.chat("can you check the interfaces on the cat8000v-0 device?")
-    print(chat)
-    print("#" * 80, "\n")
-    chat = agent.chat("can you check if the isis is configured?")
-    print(chat)
-    print("#" * 80, "\n")
-    chat = agent.chat("what vrfs I have there?")
-    print(chat)
-    print("#" * 80, "\n")
     chat = agent.chat(
-        "please provide a summary of all activities I asked you to check in our conversation"
+        "can you check the interfaces on the cat8000v-0 device?, you must use the functions available to you. Execute the tools/functiosn you have available, dont ask me to do it for you. and please show me the output of what you receive in the tools"
     )
     print(chat)
     print("#" * 80, "\n")
+    chat = agent.chat(
+        "what tools you have available? can you list them? and can you check if the isis is configured?"
+    )
+    print(chat)
+    # print("#" * 80, "\n")
+    # chat = agent.chat("what vrfs I have there?")
+    # print(chat)
+    # print("#" * 80, "\n")
+    # chat = agent.chat(
+    #     "please provide a summary of all activities I asked you to check in our conversation"
+    # )
+    # print(chat)
+    # print("#" * 80, "\n")

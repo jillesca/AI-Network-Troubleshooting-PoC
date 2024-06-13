@@ -1,6 +1,7 @@
 langchain
 langchain-openai
 openai
+langchain-mistralaib
 pyats[full]
 webex_bot
 uvicorn
