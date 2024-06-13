@@ -5,6 +5,7 @@ The LLMChatAgent class is responsible for handling the chat interactions with th
 import logging
 from pydantic import ValidationError
 from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import (
     format_to_openai_function_messages,
@@ -23,7 +24,7 @@ from llm_agent.utils.text_utils import remove_white_spaces, output_to_json
 from llm_agent.fastAPI.models import GrafanaWebhookMessage
 
 httpx_logger = logging.getLogger("httpx")
-httpx_logger.setLevel(logging.ERROR)
+httpx_logger.setLevel(logging.DEBUG)
 
 NOTIFICATION_PROMPT = """
 This is a network alert, not a user message.
@@ -31,7 +32,8 @@ This is a network alert, not a user message.
 
 MEMORY_KEY = "chat_history"
 
-LLM_MODEL = "gpt-4-turbo-preview"
+LLM_MODEL = "mistral"
+# LLM_MODEL = "gpt-4-turbo-preview"
 # LLM_MODEL = "gpt-3.5-turbo"
 
 
@@ -52,7 +54,8 @@ class LLMChatAgent:
             ]
         )
 
-        llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
+        # llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
+        llm = ChatOllama(model=LLM_MODEL)
         llm_with_tools = llm.bind(
             functions=[convert_to_openai_function(t) for t in tools]
         )
