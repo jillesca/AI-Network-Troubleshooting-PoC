@@ -9,7 +9,7 @@ from typing import Optional
 
 from pyats.topology import loader, Device
 
-from llm_agent.pyats.inventory import get_devices_from_inventory
+from llm_agent.pyats_connector.inventory import get_devices_from_inventory
 from llm_agent.config.global_settings import TESTBED_FILE
 from llm_agent.log_config.logger_setup import logger
 

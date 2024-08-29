@@ -2,7 +2,7 @@
 Script to retrieve the configuration of a device interface using the pyATS framework.
 """
 
-from llm_agent.pyats.connection_methods import api_connect, parse_connect
+from llm_agent.pyats_connector.connection_methods import api_connect, parse_connect
 
 
 def interface_running_config(device_name: str, interface_name: str) -> dict:

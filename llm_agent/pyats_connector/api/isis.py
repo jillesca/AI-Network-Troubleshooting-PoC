@@ -2,7 +2,7 @@
 This module contains the ISIS API functions. 
 """
 
-from llm_agent.pyats.connection_methods import (
+from llm_agent.pyats_connector.connection_methods import (
     parse_connect,
 )
 

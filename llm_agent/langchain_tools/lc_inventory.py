@@ -5,7 +5,7 @@ Wrapper functions to work with langchain tools and openAI
 from langchain.agents import tool
 
 from llm_agent.utils.text_utils import output_to_json
-from llm_agent.pyats.inventory import (
+from llm_agent.pyats_connector.inventory import (
     get_devices_from_inventory,
 )
 

@@ -5,7 +5,7 @@ This script is used to test the interface state
 from pprint import pprint as pp
 from test_llm_agent.load_test_settings import DEVICE_NAME
 
-from llm_agent.pyats.api.isis import (
+from llm_agent.pyats_connector.api.isis import (
     isis_neighbors,
     isis_interface_events,
     isis_interfaces,
