@@ -5,7 +5,7 @@ This script is used to test the device health state operations.
 from pprint import pprint as pp
 from test_llm_agent.load_test_settings import DEVICE_NAME
 
-from llm_agent.pyats.api.device_health_state import (
+from llm_agent.pyats_connector.api.device_health_state import (
     health_cpu,
     health_memory,
     health_logging,
