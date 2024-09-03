@@ -1,15 +1,17 @@
 # AI-Network-Troubleshooting-PoC
 
-![Docker Version](https://img.shields.io/badge/Docker-20.10+-blue)
+![Docker Version](https://img.shields.io/badge/Docker-26.0+-blue)
 
 This demo is built to showcase how you AI might assist you in troubleshooting network issues.
 
 The components used by this demo are:
 
+![components used](img/components.png)
+
 - Virtual IOS-XE devices running ISIS.
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
   - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
-- [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
+- [ncpeek.](https://github.com/jillesca/ncpeek) A `ncclient` wrapper I wrote as a netconf client for telegraf.
 - TIG stack with docker `20.10+` 🐳
   - Telegraf uses `ncpeek` to pull telemetry data from network devices.
   - Grafana kicks a webhook when an alarm is detected. 🚨
@@ -19,7 +21,18 @@ The components used by this demo are:
 - PyATS. Provides a framework to interact with network devices. 🛠️
 - [Webex_bot](https://github.com/fbradyirl/webex_bot) use to interact with the LLM. 🤖
 - OpenAI LLM. 🧠
-  - `gpt-4-turbo-preview` was used. 🚀
+  - `chatgpt-4o-latest` is used. 🚀
+
+> [!NOTE]
+> You might need to run the containers locally, the docker version of the sandbox needs to be updated.
+
+## Flow
+
+When an alert is triggered in Grafana, a webhook is sent, prompting the LLM to initiate an analysis of the alert and establish connections with network devices to identify the root cause of the issue following a plan the LLM creates.
+
+Once the initial analysis is complete, the LLM presents a concise summary of its findings to the users, along with actionable items.
+
+![llm flow](img/llm_flow.png)
 
 ## 🎬 Demo
 
