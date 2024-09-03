@@ -6,10 +6,12 @@ This demo is built to showcase how you AI might assist you in troubleshooting ne
 
 The components used by this demo are:
 
+![components used](img/components.png)
+
 - Virtual IOS-XE devices running ISIS.
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
   - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
-- [ncpeek.](https://github.com/jillesca/ncpeek) A python netconf client used for telegraf.
+- [ncpeek.](https://github.com/jillesca/ncpeek) A `ncclient` wrapper I wrote as a netconf client for telegraf.
 - TIG stack with docker `20.10+` 🐳
   - Telegraf uses `ncpeek` to pull telemetry data from network devices.
   - Grafana kicks a webhook when an alarm is detected. 🚨
@@ -24,7 +26,7 @@ The components used by this demo are:
 > [!NOTE]
 > You might need to run the containers locally, the docker version of the sandbox needs to be updated.
 
-## Overview
+## Flow
 
 When an alert is triggered in Grafana, a webhook is sent, prompting the LLM to initiate an analysis of the alert and establish connections with network devices to identify the root cause of the issue following a plan the LLM creates.
 
