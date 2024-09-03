@@ -1,6 +1,6 @@
 # AI-Network-Troubleshooting-PoC
 
-![Docker Version](https://img.shields.io/badge/Docker-20.10+-blue)
+![Docker Version](https://img.shields.io/badge/Docker-26.0+-blue)
 
 This demo is built to showcase how you AI might assist you in troubleshooting network issues.
 
