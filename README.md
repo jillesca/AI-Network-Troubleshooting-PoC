@@ -19,7 +19,18 @@ The components used by this demo are:
 - PyATS. Provides a framework to interact with network devices. 🛠️
 - [Webex_bot](https://github.com/fbradyirl/webex_bot) use to interact with the LLM. 🤖
 - OpenAI LLM. 🧠
-  - `gpt-4-turbo-preview` was used. 🚀
+  - `chatgpt-4o-latest` is used. 🚀
+
+> [!NOTE]
+> You might need to run the containers locally, the docker version of the sandbox needs to be updated.
+
+## Overview
+
+When an alert is triggered in Grafana, a webhook is sent, prompting the LLM to initiate an analysis of the alert and establish connections with network devices to identify the root cause of the issue following a plan the LLM creates.
+
+Once the initial analysis is complete, the LLM presents a concise summary of its findings to the users, along with actionable items.
+
+![llm flow](img/llm_flow.png)
 
 ## 🎬 Demo
 
