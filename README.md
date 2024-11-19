@@ -48,6 +48,10 @@ This signal that a stable ISIS neighbor that was working on the last 30 minutes 
 
 ## 🛠️ Prepare Demo
 
+### Requirements
+
+This demo utilizes Compose V2 for container orchestration, which means you should use `docker compose` instead of `docker-compose`. If you haven't already, please [update your Docker client.](https://docs.docker.com/compose/releases/migrate/#how-do-i-switch-to-compose-v2)
+
 ### 🔑 Environment variables
 
 Environment variables are injected through the use of [the Makefile on root of the project.](Makefile)
@@ -56,6 +60,8 @@ Environment variables are injected through the use of [the Makefile on root of t
 
 > [!IMPORTANT]  
 > For the demo to work, you **must** set the next environment variables.
+
+**Create** a `.env` file in the root directory of the project and include the following environment variables. This `.env` file is utilized by the [Makefile.](Makefile#L2)
 
 ```bash
 OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
@@ -94,11 +100,15 @@ LANGCHAIN_TRACING_V2=true
 LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 ```
 
-#### .env.local file
+#### Why `.env.local` and `.env` must be present?
 
-The [.env.local file](.env.local) is used to define all variables used by the containers.
+For this demo to function correctly, additional environment variables are required by the containers.
 
-In a production environment, this file should be kept out of version control using the `.gitignore` file.
+The [.env.local file](.env.local) serves as a template with some predefined environment variables.
+
+The `.env` file, which is ignored by git, is used to store sensitive API keys preventing accidental commits of sensitive data.
+
+In a production environment, ensure that your environment variables are not included in your git repository to maintain security.
 
 ### 🚀 Start the topology
 
