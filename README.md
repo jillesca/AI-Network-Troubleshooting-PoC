@@ -9,7 +9,7 @@ The components used by this demo are:
 ![components used](img/components.png)
 
 - Virtual IOS-XE devices running ISIS.
-  - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
+  - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab. Grab a reservation.
   - <https://10.10.20.161> - `developer` / `C1sco12345`
 - [ncpeek.](https://github.com/jillesca/ncpeek) A `ncclient` wrapper I wrote as a netconf client for telegraf.
 - TIG stack with docker `20.10+` 🐳
