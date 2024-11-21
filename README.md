@@ -10,7 +10,7 @@ The components used by this demo are:
 
 - Virtual IOS-XE devices running ISIS.
   - The [CML Devnet sandbox](https://developer.cisco.com/site/sandbox/) was used to build the lab.
-  - Sandbox DevBox VM `10.10.20.50`, `developer`/`C1sco12345`)
+  - <https://10.10.20.161> - `developer` / `C1sco12345`
 - [ncpeek.](https://github.com/jillesca/ncpeek) A `ncclient` wrapper I wrote as a netconf client for telegraf.
 - TIG stack with docker `20.10+` 🐳
   - Telegraf uses `ncpeek` to pull telemetry data from network devices.
@@ -24,7 +24,7 @@ The components used by this demo are:
   - `chatgpt-4o-latest` is used. 🚀
 
 > [!IMPORTANT]
-> Run the containers locally on your system instead of using the sandbox VM.
+> Run the containers locally on your system instead of using the sandbox VM. Use the sandbox CML to run the CML topology with the XE devices.
 
 ## Flow
 
@@ -50,7 +50,9 @@ This signal that a stable ISIS neighbor that was working on the last 30 minutes 
 
 ### Requirements
 
-This demo utilizes Compose V2 for container orchestration, which means you should use `docker compose` instead of `docker-compose`. If you haven't already, please [update your Docker client.](https://docs.docker.com/compose/releases/migrate/#how-do-i-switch-to-compose-v2)
+- This demo utilizes Compose V2 for container orchestration, which means you should use `docker compose` instead of `docker-compose`. If you haven't already, please [update your Docker client.](https://docs.docker.com/compose/releases/migrate/#how-do-i-switch-to-compose-v2)
+
+- Remove the default CML topology from the CML sandbox (<https://10.10.20.161>) and [upload the topology](cml/topology.yaml) used for this demo.
 
 ### 🔑 Environment variables
 
