@@ -23,8 +23,8 @@ The components used by this demo are:
 - OpenAI LLM. 🧠
   - `chatgpt-4o-latest` is used. 🚀
 
-> [!NOTE]
-> You might need to run the containers locally, the docker version of the sandbox needs to be updated.
+> [!IMPORTANT]
+> Run the containers locally on your system instead of using the sandbox VM.
 
 ## Flow
 
