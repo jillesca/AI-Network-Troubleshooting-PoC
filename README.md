@@ -2,6 +2,9 @@
 
 ![Docker Version](https://img.shields.io/badge/Docker-26.0+-blue)
 
+> [!IMPORTANT]
+> See [oncall-netops-tig-pyats-demo](https://github.com/jillesca/oncall-netops-tig-pyats-demo) which is a newer and better version of this demo. No further updates will be done to this repository.
+
 This demo is built to showcase how you AI might assist you in troubleshooting network issues. This demo was presented at Cisco Developer Days 2024 and API Days Paris 2024. Check out the [recording from Developer Days](https://youtu.be/0Uef42agBso?si=dpgQxlmdCcFZ5-Lz) to see how this solution works.
 
 The components used by this demo are:
